@@ -71,6 +71,19 @@ char** splitString(char *string, int nTokens, const char *delim) {
     char **tokens = (char**) malloc(sizeof(char*) * nTokens);
     int index = 0;
     int len = strlen(string);
+
+    // Discard newline, if present
+    if (string[len - 1] == '\n') {      
+        string[len - 1] = '\0';
+        len--;
+    }
+   
+    // Discard carriage return, if present
+    if (string[len - 1] == '\r') {      
+        string[len - 1] = '\0';
+        len--;
+    }  
+	
     tokens[index++] = &string[0];
     for(int i=0; i < len; i++) {
         if( string[i] == delim[0] ) {
