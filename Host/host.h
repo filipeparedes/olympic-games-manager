@@ -19,6 +19,9 @@
 #define MAX_GAME_NAME_LENGTH 50
 #define MAX_GAME_SEASON_LENGTH 20
 
+typedef struct host Host;
+typedef Host* PtHost;
+
 /**
  * @brief Structure representing a host of the games.
  */
