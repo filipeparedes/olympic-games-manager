@@ -21,6 +21,7 @@
 #include "./StringWrap/stringWrap.h"
 #include "./ADTMap/map.h"
 #include "./ADTList/list.h"
+#include "./Load/load.h"
 
 #define ARRAY_NO_MEMORY 1
 
@@ -32,18 +33,24 @@ int main() {
     bool quit = false;
     char command[MAX_COMMAND_LENGTH];
 
-    //TODO: get specific size of each file.
-
     PtList medalsList = listCreate();
     PtMap athletesMap = mapCreate();
-    PtHost hostsArray = (Host*) malloc(sizeof(Host)* 1); 
-    
+
+    FILE* hostsFile = fopen("Host/hosts.csv", "r");
+    if (hostsFile == NULL) return FILE_NOT_FOUND;
+    PtHost hostsArray = (Host*) malloc(sizeof(Host)* countFileLines(hostsFile));
+    fclose(hostsFile);
+
     if (medalsList == NULL) return LIST_NO_MEMORY;
     if (athletesMap == NULL) return MAP_NO_MEMORY;
     if (hostsArray == NULL) return ARRAY_NO_MEMORY;
 
+    int hostsSize = 0;
+    int athletesSize = 0;
+    int medalsSize = 0;
+
     do {
-        printf("\nbash@projeto-atad:~$ ");
+        printf("\nbash@Projeto-ATAD:~$ ");
         readString(command, MAX_COMMAND_LENGTH);
 
         //Makes every character in the command lowercase
@@ -52,16 +59,45 @@ int main() {
         }
 
         if (strcmp(command, "load_a") == 0) {
-            printf("Not implemented yet.");
+            int ret = importAthletes(athletesMap, &athletesSize);
+
+            if(ret == LOAD_OK) printf("%d athlete records imported.\n", athletesSize);
+            else if (ret == FILE_NOT_FOUND) printf("File not found.\n");
+            else if (ret == MAP_NULL) printf("Invalid map pointer.");
         }   
         else if (strcmp(command, "load_m") == 0) {
-            printf("Not implemented yet.");
+            int ret = importMedals(medalsList, &medalsSize);
+
+            if(ret == LOAD_OK) printf("%d medal records imported.\n", medalsSize);
+            else if (ret == FILE_NOT_FOUND) printf("File not found.\n");
+            else if (ret == MAP_NULL) printf("Invalid map pointer.");
         }
         else if (strcmp(command, "load_h") == 0) {
-            printf("Not implemented yet.");
+            int ret = importHosts(hostsArray, &hostsSize);
+
+            if(ret == LOAD_OK) printf("%d host records imported.\n", hostsSize);
+            else if (ret == FILE_NOT_FOUND) printf("File not found.\n");
+            else if (ret == MAP_NULL) printf("Invalid map pointer.");
         }
         else if (strcmp(command, "clear") == 0) {
-            printf("Not implemented yet.");
+            if (athletesMap != NULL) {
+                mapDestroy(&athletesMap);
+                athletesMap = NULL;
+            }
+            if (medalsList != NULL) {
+                listDestroy(&medalsList);
+                medalsList = NULL;
+            }
+            if (hostsArray != NULL) {
+                free(hostsArray);
+                hostsArray = NULL;
+            } 
+
+            printf("Records deleted from Athletes (%d) | Medals (%d) | Hosts (%d)\n", athletesSize, medalsSize, hostsSize);
+
+            hostsSize = 0;
+            athletesSize = 0;
+            medalsSize = 0;
         }
         else if (strcmp(command, "show_all") == 0) {
             printf("Not implemented yet.");
@@ -94,6 +130,10 @@ int main() {
             printf("Unknown Command");
         }
     } while (!quit);
+
+    if (medalsList != NULL) listDestroy(&medalsList); 
+    if (athletesMap != NULL) mapDestroy(&athletesMap);
+    if (hostsArray != NULL) free(hostsArray);
 
     return EXIT_SUCCESS;
 }

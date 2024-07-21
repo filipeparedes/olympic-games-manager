@@ -20,30 +20,29 @@
 #include "../Input/input.h"
 
 int stringToDate(char* str, Date* date){
-
-    char seconds[3];
-
     if (str == NULL) return STRING_NULL;
     if (date == NULL) return DATE_NULL;
 
     char** split = splitString(str, 2, "T");
-        if (split[0] == NULL || split[1] == NULL){
-            free(split);
-            return STRING_INVALID;
-        } 
+    if (split == NULL || split[0] == NULL || split[1] == NULL){
+        if(split) free(split);
+        return STRING_INVALID;
+    } 
+
     char** splitDate = splitString(split[0], 3, "-");
-        if (splitDate[0] == NULL || splitDate[1] == NULL || splitDate[3] == NULL){
-            free(split);
-            free(splitDate);
-            return STRING_INVALID;
-        } 
+    if (splitDate == NULL || splitDate[0] == NULL || splitDate[1] == NULL || splitDate[2] == NULL){
+        free(split);
+        if (splitDate) free(splitDate);
+        return STRING_INVALID;
+    } 
+
     char** splitTime = splitString(split[1], 3, ":");
-        if (splitTime[0] == NULL || splitTime[1] == NULL || splitDate[3] == NULL){
-            free(split);
-            free(splitTime);
-            free(splitDate);
-            return STRING_INVALID;
-        } 
+    if (splitTime == NULL || splitTime[0] == NULL || splitTime[1] == NULL || splitTime[2] == NULL){
+        free(split);
+        free(splitDate);
+        if (splitTime) free(splitTime);
+        return STRING_INVALID;
+    } 
 
     date->year = atoi(splitDate[0]);
     date->month = atoi(splitDate[1]);
@@ -51,13 +50,11 @@ int stringToDate(char* str, Date* date){
     
     date->hour = atoi(splitTime[0]);
     date->minute = atoi(splitTime[1]);
-
-    strncpy(seconds, splitTime[2], 2);
-    date->second = atoi(seconds);
+    date->second = atoi(splitTime[2]);  
 
     free(split);
-    free(splitTime);
     free(splitDate);
+    free(splitTime);
 
     return DATE_OK;
 }
