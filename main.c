@@ -13,7 +13,6 @@
 #include <stdio.h> 
 #include <stdlib.h>
 
-
 #include "./Input/input.h"
 #include "./Host/host.h"
 #include "./Medal/medal.h"
@@ -22,6 +21,8 @@
 #include "./ADTMap/map.h"
 #include "./ADTList/list.h"
 #include "./Load/load.h"
+#include "./Listings/listings.h"
+#include "./Logic/logic.h"
 
 #define ARRAY_NO_MEMORY 1
 
@@ -100,34 +101,54 @@ int main() {
             medalsSize = 0;
         }
         else if (strcmp(command, "show_all") == 0) {
-            printf("Not implemented yet.");
+            paginate(athletesMap);
         }
         else if (strcmp(command, "show_participations") == 0) {
-            printf("Not implemented yet.");
+            int participations;
+            printf("Insert number of participations: ");
+            scanf("%d", &participations);
+
+            PtMap filteredMap = filterMapByParticipations(athletesMap, participations);
+            int filteredMapSize;
+            mapSize(filteredMap, &filteredMapSize);
+            if (filteredMapSize == 0) printf("No athletes found with at least %d participations.\n", participations);
+            else {
+                paginate(filteredMap);
+            }
         }
         else if (strcmp(command, "show_first") == 0) {
-            printf("Not implemented yet.");
+            char firstYear[5];
+            printf("Insert the first participation's year (YYYY): ");
+            scanf("%s", firstYear);
+
+            PtMap filteredMap = filterMapByFirstYear(athletesMap, firstYear);
+            int filteredMapSize;
+            mapSize(filteredMap, &filteredMapSize);
+            if (filteredMapSize == 0) printf("No athletes whose first participation was at %s\n", firstYear);
+            else {
+                paginate(filteredMap);
+            }
         }
         else if (strcmp(command, "show_host") == 0) {
-            printf("Not implemented yet.");
+            printf("Not implemented yet.\n");
         }
         else if (strcmp(command, "discipline_statistics") == 0) {
-            printf("Not implemented yet.");
+            printf("Not implemented yet.\n");
         }
         else if (strcmp(command, "athlete_info") == 0) {
-            printf("Not implemented yet.");
+            printf("Not implemented yet.\n");
         }
         else if (strcmp(command, "topn") == 0) {
-            printf("Not implemented yet.");
+            printf("Not implemented yet.\n");
         }
         else if (strcmp(command, "medals_won") == 0) {
-            printf("Not implemented yet.");
+            printf("Not implemented yet.\n");
         }
         else if (strcmp(command, "quit") == 0) {
             quit = true;
         }
         else {
-            printf("Unknown Command");
+            printf("Unknown Command\n");
         }
     } while (!quit);
 

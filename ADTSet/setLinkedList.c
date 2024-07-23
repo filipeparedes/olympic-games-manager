@@ -1,7 +1,7 @@
 /**
  * @file setLinkedList.c
  * @author Filipe Paredes (202300257@estudantes.ips.pt)
- * @brief Provides an implementation of the ADT Set with a linked array list as the underlying data structure.
+ * @brief Provides an implementation of the ADT Set with a linked list as the underlying data structure.
  * @version 0.3
  * @date 2024-07-22
  * @copyright Copyright (c) 2024
