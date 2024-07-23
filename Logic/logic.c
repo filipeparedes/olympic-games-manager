@@ -51,7 +51,8 @@ PtMap filterMapByParticipations(PtMap athletes, int participations){
 }
 
 PtMap filterMapByFirstYear(PtMap athletes, char* firstYear){
-     PtMap filteredMap = mapCreate();
+
+    PtMap filteredMap = mapCreate();
     if (filteredMap == NULL){
         printf("Failed to create filtered map.\n");
         return NULL;
@@ -86,4 +87,64 @@ PtMap filterMapByFirstYear(PtMap athletes, char* firstYear){
 
     free(keys);
     return filteredMap;
+}
+
+char** getHostData(PtHost host, int hostSize, char* editionName) {
+
+    if (hostSize == 0){
+        printf("The original array is empty.\n");
+        return NULL;
+    }
+
+    char** data = (char**)malloc(4 * sizeof(char*));
+
+    if (data == NULL) {
+        printf("Failed to create the data array.\n");
+        return NULL;
+    }
+
+    for (int i = 0; i < 4; i++) {
+        data[i] = (char*)malloc(50 * sizeof(char));
+        if (data[i] == NULL) {
+            printf("Failed to allocate memory for a string.\n");
+            for (int j = 0; j < i; j++) {
+                free(data[j]);
+            }
+            free(data);
+            return NULL;
+        }
+    }
+
+    Host searchedHost;
+    bool found = false;
+    
+    for (int i = 0; i<hostSize; i++) {
+        if (strcmp(host[i].gameName,editionName) == 0){
+            searchedHost = host[i];
+            found = true;
+        }
+    }
+
+    if (!found)
+    {
+         printf("No edition found."); 
+         free(data);
+         data = NULL;
+         return NULL;
+    }
+
+    int gameNameLen = strlen(searchedHost.gameName);
+    if (gameNameLen > 5) {
+        strncpy(data[0], searchedHost.gameName, gameNameLen-4);
+        data[0][gameNameLen-5] = '\0';
+    } 
+    else strcpy(data[0], "");
+    
+    sprintf(data[1], "%d", searchedHost.gameYear);
+    strcpy(data[2], searchedHost.location);
+
+    int dayDif = ((searchedHost.gameEndDate.month-searchedHost.gameStartDate.month) * 30) + (searchedHost.gameEndDate.day-searchedHost.gameStartDate.day);
+    sprintf(data[3], "%d", dayDif);
+
+    return data;
 }

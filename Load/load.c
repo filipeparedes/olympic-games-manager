@@ -114,7 +114,7 @@ int importHosts(PtHost array, int* size){
         Host host;
         if(splitStr[0] != NULL) strcpy(host.game, splitStr[0]);
         if(splitStr[1] != NULL) stringToDate(splitStr[1], &host.gameEndDate);
-        if(splitStr[2] != NULL) stringToDate(splitStr[1], &host.gameStartDate);
+        if(splitStr[2] != NULL) stringToDate(splitStr[2], &host.gameStartDate);
         if(splitStr[3] != NULL) strcpy(host.location, splitStr[3]);
         if(splitStr[4] != NULL) strcpy(host.gameName, splitStr[4]);
         if(splitStr[5] != NULL) strcpy(host.season, splitStr[5]);

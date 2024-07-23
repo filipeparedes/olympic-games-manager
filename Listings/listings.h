@@ -25,6 +25,12 @@
  */
 void paginate(PtMap athletes);
 
+/**
+ * @brief Displays the data of a specific host
+ * 
+ * @param hostData an array of strings, containing the data
+ */
+void printHostDetails(char** hostData);
 
 /**
  * @brief Sorts the values in the map in alphabetical order based on the athlete's name.

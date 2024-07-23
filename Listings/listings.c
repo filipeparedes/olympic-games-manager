@@ -70,6 +70,16 @@ void paginate(PtMap athletes) {
 
     free(sortedMapVal);
 }
+
+void printHostDetails(char** hostData) {
+    if (hostData == NULL) return;
+
+    printf("\nHosting city: %s\n", hostData[0]);
+    printf("Year: %s\n", hostData[1]);
+    printf("Hosting country: %s\n", hostData[2]);
+    printf("Duration of the event (days): %s\n\n", hostData[3]);
+}
+
 //TODO: make this a quick sort
 MapValue* sortMapValues(PtMap athletes) {
     int mapSizeVar;
@@ -90,4 +100,6 @@ MapValue* sortMapValues(PtMap athletes) {
     
    return values;
 }
+
+
  

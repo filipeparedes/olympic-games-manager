@@ -15,6 +15,7 @@
 #pragma once
 
 #include "../ADTMap/map.h"
+#include "../Host/host.h"
 
 /**
  * @brief Filters a map based on game participations.
@@ -35,3 +36,14 @@ PtMap filterMapByParticipations(PtMap athletes, int participations);
  * @return The filtered map
  */
 PtMap filterMapByFirstYear(PtMap athletes, char* firstYear);
+
+
+/**
+ * @brief Retrieves data from hosts, given a specific edition
+ * 
+ * @param host an array of hosts
+ * @param hostSize the size of the array
+ * @param editionName the name of the edition
+ * @return An array with the data
+ */
+char** getHostData(PtHost host, int hostSize, char* editionName);

@@ -128,9 +128,20 @@ int main() {
             else {
                 paginate(filteredMap);
             }
+
+            free(filteredMap);
         }
         else if (strcmp(command, "show_host") == 0) {
-            printf("Not implemented yet.\n");
+            char editionName[50];
+            printf("Insert an edition name (e.g. 'Montreal 1976'): ");
+            readString(editionName, 50);
+
+            char** hostData = getHostData(hostsArray, hostsSize, editionName);
+
+            printHostDetails(hostData);
+
+            free(hostData);
+            hostData = NULL;
         }
         else if (strcmp(command, "discipline_statistics") == 0) {
             printf("Not implemented yet.\n");
