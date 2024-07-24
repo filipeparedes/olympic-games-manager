@@ -22,13 +22,12 @@
 
 #include "load.h"
 #include "../Date/date.h"
+#include "../Medal/medal.h"
 
-int importMedals(PtList list, int* size){
+int importMedals(PtMedal array, int* size){
     FILE* file = fopen("Medal/medals.csv", "r");
     if (file == NULL) return FILE_NOT_FOUND;
-    if (list == NULL) return LIST_NULL;
-
-    listClear(list);
+    if (array == NULL) return ARRAY_NULL;
 
     int count = 0;
     char line[FILE_LINE_SIZE];
@@ -51,7 +50,42 @@ int importMedals(PtList list, int* size){
         if(splitStr[8] != NULL) strcpy(medal.country, splitStr[8]);
         if(splitStr[9] != NULL) strncpy(medal.countryCode, splitStr[9], 3);
 
-        listAdd(list, count-1, medal);
+        array[count-1] = medal;
+        count++;
+        free(splitStr);
+    }
+
+    *size = count-1;
+    fclose(file);
+
+    return LOAD_OK;
+}
+
+int importAthletes(PtList list, int* size){
+    FILE* file = fopen("Athlete/athletes.csv", "r");
+    if (file == NULL) return FILE_NOT_FOUND;
+    if (list == NULL) return LIST_NULL;
+
+    listClear(list);
+
+    int count = 0;
+    char line[FILE_LINE_SIZE];
+
+    while (fgets(line, FILE_LINE_SIZE, file) != NULL) {
+        if (count == 0) {count++; continue;}
+        line[strlen(line)] = '\0';
+
+        char** splitStr = splitString(line, 5, ";");
+        if (splitStr == NULL) continue;
+
+        Athlete athlete;
+        if(splitStr[0] != NULL){strcpy(athlete.athleteID, splitStr[0]);}
+        if(splitStr[1] != NULL) strcpy(athlete.athleteName, splitStr[1]);
+        if(splitStr[2] != NULL) athlete.gamesParticipations = atoi(splitStr[2]);
+        if(splitStr[3] != NULL) strcpy(athlete.firstGame, splitStr[3]);
+        if(splitStr[4] != NULL) athlete.athleteBirth = atoi(splitStr[4]);
+
+        listAdd(list, count-1, athlete);
         free(splitStr);
     }
 
@@ -59,10 +93,11 @@ int importMedals(PtList list, int* size){
 
     fclose(file);
     return LOAD_OK;
+
 }
 
-int importAthletes(PtMap map, int* size){
-    FILE* file = fopen("Athlete/athletes.csv", "r");
+int importHosts(PtMap map, int* size){
+    FILE* file = fopen("Host/hosts.csv", "r");
     if (file == NULL) return FILE_NOT_FOUND;
     if (map == NULL) return MAP_NULL;
 
@@ -75,44 +110,12 @@ int importAthletes(PtMap map, int* size){
         if (firstLine) {firstLine = false; continue;}
         line[strlen(line)] = '\0';
 
-        char** splitStr = splitString(line, 5, ";");
-        if (splitStr == NULL) continue;
-
-        Athlete athlete;
-        StringWrap strWrap;
-        if(splitStr[0] != NULL){strcpy(athlete.athleteID, splitStr[0]); strWrap = stringWrapCreate(splitStr[0]);}
-        if(splitStr[1] != NULL) strcpy(athlete.athleteName, splitStr[1]);
-        if(splitStr[2] != NULL) athlete.gamesParticipations = atoi(splitStr[2]);
-        if(splitStr[3] != NULL) strcpy(athlete.firstGame, splitStr[3]);
-        if(splitStr[4] != NULL) athlete.athleteBirth = atoi(splitStr[4]);
-
-        mapPut(map, strWrap, athlete);
-
-        free(splitStr);
-    }
-    mapSize(map, size);
-
-    fclose(file);
-    return LOAD_OK;
-}
-
-int importHosts(PtHost array, int* size){
-    FILE* file = fopen("Host/hosts.csv", "r");
-    if (file == NULL) return FILE_NOT_FOUND;
-    if (array == NULL) return ARRAY_NULL;
-
-    int count = 0;
-    char line[FILE_LINE_SIZE];
-
-    while (fgets(line, FILE_LINE_SIZE, file) != NULL) {
-        if (count == 0) {count++; continue;}
-        line[strlen(line)] = '\0';
-
         char** splitStr = splitString(line, 7, ";");
         if (splitStr == NULL) continue;
 
         Host host;
-        if(splitStr[0] != NULL) strcpy(host.game, splitStr[0]);
+        StringWrap strWrap;
+        if(splitStr[0] != NULL){strWrap = stringWrapCreate(splitStr[0]);}
         if(splitStr[1] != NULL) stringToDate(splitStr[1], &host.gameEndDate);
         if(splitStr[2] != NULL) stringToDate(splitStr[2], &host.gameStartDate);
         if(splitStr[3] != NULL) strcpy(host.location, splitStr[3]);
@@ -120,14 +123,13 @@ int importHosts(PtHost array, int* size){
         if(splitStr[5] != NULL) strcpy(host.season, splitStr[5]);
         if(splitStr[6] != NULL) host.gameYear = atoi(splitStr[6]);
 
-        array[count-1] = host;
-        count++;
+        mapPut(map, strWrap, host);
+
         free(splitStr);
     }
+    mapSize(map, size);
 
-    *size = count-1;
     fclose(file);
-
     return LOAD_OK;
 }
 

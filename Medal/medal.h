@@ -18,6 +18,9 @@
 #define MAX_ID_A_LENGTH 50
 #define MAX_COUNTRY_LENGTH 50
 
+typedef struct medal Medal;
+typedef Medal* PtMedal;
+
 typedef struct medal {
 
     char discipline[MAX_DISC_LENGTH]; // Modalidade

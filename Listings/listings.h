@@ -15,15 +15,24 @@
 
 #include "../ADTMap/map.h"
 #include "../ADTMap/mapElem.h"
+#include "../ADTSet/set.h"
+#include "../ADTList/list.h"
 
 /**
- * @brief Displays all athlete information in the map.
+ * @brief Displays all athlete information in the list.
  * 
- * This function prints information of all athletes stored in the map. Information is sorted by athlete name.
+ * This function prints information of all athletes stored in the list. Information is sorted by athlete name.
  * 
- * @param athletes Pointer to the map of athletes.
+ * @param athletes Pointer to the list of athletes.
  */
-void paginate(PtMap athletes);
+void paginate(PtList athletes);
+
+/**
+ * @brief Displays a set of statistics about a certain edition.
+ * 
+ * @param statistics a set of statistics
+ */
+void paginateSet(PtSet statistics); 
 
 /**
  * @brief Displays the data of a specific host
@@ -33,11 +42,11 @@ void paginate(PtMap athletes);
 void printHostDetails(char** hostData);
 
 /**
- * @brief Sorts the values in the map in alphabetical order based on the athlete's name.
+ * @brief Sorts the athletes list in alphabetical order based on the athlete's name.
  * 
- * @param athletes Pointer to the map of athletes.
+ * @param athletes Pointer to the list of athletes.
  * 
- * @returns An array of the sorted Map Values.
+ * @returns A list of the sorted Map Values.
  */
-MapValue* sortMapValues(PtMap athletes);
+PtList sortList(PtList athletes);
 

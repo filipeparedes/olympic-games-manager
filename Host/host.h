@@ -14,20 +14,15 @@
 
 #include "../Date/date.h"
 
-#define MAX_GAMESLUG_LENGTH 50 
 #define MAX_GAME_LOCATION_LENGTH 50
 #define MAX_GAME_NAME_LENGTH 50
 #define MAX_GAME_SEASON_LENGTH 20
-
-typedef struct host Host;
-typedef Host* PtHost;
 
 /**
  * @brief Structure representing a host of the games.
  */
 typedef struct host {
-
-    char game[MAX_GAMESLUG_LENGTH];           
+         
     Date gameEndDate;
     Date gameStartDate;
     char location[MAX_GAME_LOCATION_LENGTH];

@@ -26,7 +26,7 @@
 
 #define ARRAY_NO_MEMORY 1
 
-#define MAX_COMMAND_LENGTH 20
+#define MAX_COMMAND_LENGTH 25
 #define MAX_LINE_LENGTH 1000
 
 int main() {
@@ -34,17 +34,17 @@ int main() {
     bool quit = false;
     char command[MAX_COMMAND_LENGTH];
 
-    PtList medalsList = listCreate();
-    PtMap athletesMap = mapCreate();
+    PtList athletesList = listCreate();
+    PtMap hostsMap = mapCreate();
 
-    FILE* hostsFile = fopen("Host/hosts.csv", "r");
-    if (hostsFile == NULL) return FILE_NOT_FOUND;
-    PtHost hostsArray = (Host*) malloc(sizeof(Host)* countFileLines(hostsFile));
-    fclose(hostsFile);
+    FILE* medalsFile = fopen("Medal/medals.csv", "r");
+    if (medalsFile == NULL) return FILE_NOT_FOUND;
+    PtMedal medalsArray = (Medal*) malloc(sizeof(Medal)* countFileLines(medalsFile));
+    fclose(medalsFile);
 
-    if (medalsList == NULL) return LIST_NO_MEMORY;
-    if (athletesMap == NULL) return MAP_NO_MEMORY;
-    if (hostsArray == NULL) return ARRAY_NO_MEMORY;
+    if (athletesList == NULL) return LIST_NO_MEMORY;
+    if (hostsMap == NULL) return MAP_NO_MEMORY;
+    if (medalsArray == NULL) return ARRAY_NO_MEMORY;
 
     int hostsSize = 0;
     int athletesSize = 0;
@@ -60,38 +60,38 @@ int main() {
         }
 
         if (strcmp(command, "load_a") == 0) {
-            int ret = importAthletes(athletesMap, &athletesSize);
+            int ret = importAthletes(athletesList, &athletesSize);
 
             if(ret == LOAD_OK) printf("%d athlete records imported.\n", athletesSize);
             else if (ret == FILE_NOT_FOUND) printf("File not found.\n");
             else if (ret == MAP_NULL) printf("Invalid map pointer.");
         }   
         else if (strcmp(command, "load_m") == 0) {
-            int ret = importMedals(medalsList, &medalsSize);
+            int ret = importMedals(medalsArray, &medalsSize);
 
             if(ret == LOAD_OK) printf("%d medal records imported.\n", medalsSize);
             else if (ret == FILE_NOT_FOUND) printf("File not found.\n");
             else if (ret == MAP_NULL) printf("Invalid map pointer.");
         }
         else if (strcmp(command, "load_h") == 0) {
-            int ret = importHosts(hostsArray, &hostsSize);
+            int ret = importHosts(hostsMap, &hostsSize);
 
             if(ret == LOAD_OK) printf("%d host records imported.\n", hostsSize);
             else if (ret == FILE_NOT_FOUND) printf("File not found.\n");
             else if (ret == MAP_NULL) printf("Invalid map pointer.");
         }
         else if (strcmp(command, "clear") == 0) {
-            if (athletesMap != NULL) {
-                mapDestroy(&athletesMap);
-                athletesMap = NULL;
+            if (hostsMap != NULL) {
+                mapDestroy(&hostsMap);
+                hostsMap = NULL;
             }
-            if (medalsList != NULL) {
-                listDestroy(&medalsList);
-                medalsList = NULL;
+            if (athletesList != NULL) {
+                listDestroy(&athletesList);
+                athletesList = NULL;
             }
-            if (hostsArray != NULL) {
-                free(hostsArray);
-                hostsArray = NULL;
+            if (medalsArray != NULL) {
+                free(medalsArray);
+                medalsArray = NULL;
             } 
 
             printf("Records deleted from Athletes (%d) | Medals (%d) | Hosts (%d)\n", athletesSize, medalsSize, hostsSize);
@@ -101,19 +101,19 @@ int main() {
             medalsSize = 0;
         }
         else if (strcmp(command, "show_all") == 0) {
-            paginate(athletesMap);
+            paginate(athletesList);
         }
         else if (strcmp(command, "show_participations") == 0) {
             int participations;
             printf("Insert number of participations: ");
             scanf("%d", &participations);
 
-            PtMap filteredMap = filterMapByParticipations(athletesMap, participations);
-            int filteredMapSize;
-            mapSize(filteredMap, &filteredMapSize);
-            if (filteredMapSize == 0) printf("No athletes found with at least %d participations.\n", participations);
+            PtList filteredList = filterListByParticipations(athletesList, participations);
+            int filteredListSize;
+            listSize(filteredList, &filteredListSize);
+            if (filteredListSize == 0) printf("No athletes found with at least %d participations.\n", participations);
             else {
-                paginate(filteredMap);
+                paginate(filteredList);
             }
         }
         else if (strcmp(command, "show_first") == 0) {
@@ -121,22 +121,22 @@ int main() {
             printf("Insert the first participation's year (YYYY): ");
             scanf("%s", firstYear);
 
-            PtMap filteredMap = filterMapByFirstYear(athletesMap, firstYear);
-            int filteredMapSize;
-            mapSize(filteredMap, &filteredMapSize);
-            if (filteredMapSize == 0) printf("No athletes whose first participation was at %s\n", firstYear);
+            PtList filteredList = filterListByFirstYear(athletesList, firstYear);
+            int filteredListSize;
+            listSize(filteredList, &filteredListSize);
+            if (filteredListSize == 0) printf("No athletes whose first participation was at %s\n", firstYear);
             else {
-                paginate(filteredMap);
+                paginate(filteredList);
             }
 
-            free(filteredMap);
+            free(filteredList);
         }
         else if (strcmp(command, "show_host") == 0) {
             char editionName[50];
             printf("Insert an edition name (e.g. 'Montreal 1976'): ");
             readString(editionName, 50);
 
-            char** hostData = getHostData(hostsArray, hostsSize, editionName);
+            char** hostData = getHostData(hostsMap, editionName);
 
             printHostDetails(hostData);
 
@@ -144,7 +144,13 @@ int main() {
             hostData = NULL;
         }
         else if (strcmp(command, "discipline_statistics") == 0) {
-            printf("Not implemented yet.\n");
+            char editionName[50];
+            printf("Insert an edition name (e.g. 'Sydney 2000'): ");
+            readString(editionName, 50);
+
+            PtSet set = getDisciplineStatistics(medalsArray, medalsSize, hostsMap, editionName);
+
+            paginateSet(set);
         }
         else if (strcmp(command, "athlete_info") == 0) {
             printf("Not implemented yet.\n");
@@ -163,9 +169,9 @@ int main() {
         }
     } while (!quit);
 
-    if (medalsList != NULL) listDestroy(&medalsList); 
-    if (athletesMap != NULL) mapDestroy(&athletesMap);
-    if (hostsArray != NULL) free(hostsArray);
+    if (athletesList != NULL) listDestroy(&athletesList); 
+    if (hostsMap != NULL) mapDestroy(&hostsMap);
+    if (medalsArray != NULL) free(medalsArray);
 
     return EXIT_SUCCESS;
 }

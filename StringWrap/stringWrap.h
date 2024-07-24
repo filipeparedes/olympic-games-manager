@@ -13,7 +13,7 @@
  * 
  */
 #pragma once
-#define STRING_MAX_LEN 100
+#define STRING_MAX_LEN 50
 
 /**
  * @brief Struct to wrap a string.

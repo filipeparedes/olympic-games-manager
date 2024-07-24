@@ -15,11 +15,12 @@ void mapKeyPrint(MapKey key) {
 }
 
 void mapValuePrint(MapValue value) {
-	printf("%40s", value.athleteID);
-	printf("%60s", value.athleteName);
-	printf("%15d", value.gamesParticipations);
-	printf("%30s", value.firstGame);
-	printf("%12d\n", value.athleteBirth);
+	printf("%20d-%d-%d", value.gameEndDate.year, value.gameEndDate.month, value.gameEndDate.day);
+	printf("%20d-%d-%d", value.gameStartDate.year, value.gameStartDate.month, value.gameStartDate.day);
+	printf("%30s", value.location);
+	printf("%30s", value.gameName);
+	printf("%12s", value.season);
+	printf("%12d\n", value.gameYear);
 }
 
 int mapKeyCompare(MapKey key1, MapKey key2) {

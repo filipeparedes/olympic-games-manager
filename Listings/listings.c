@@ -19,20 +19,24 @@
 #include "listings.h"
 #include "../ADTMap/map.h"
 #include "../ADTMap/mapElem.h"
+#include "../ADTList/list.h"
+#include "../ADTSet/set.h"
+#include "../Athlete/athlete.h"
 
-MapValue* sortMapValues(PtMap athletes);
+PtList sortList(PtList athletes);
 
-void paginate(PtMap athletes) {
+void paginate(PtList athletes) {
     int page = 0;
     int size = 0;
     int command;
-    mapSize(athletes, &size);
-    Athlete* sortedMapVal = sortMapValues(athletes);
+    listSize(athletes, &size);
+    PtList sortedList = sortList(athletes);
 
     printf("%d ATHLETES FOUND \n", size);
 
     if (size != 0) {
         bool whileOn = true;
+        Athlete athlete;
 
         while (whileOn)
         {
@@ -47,8 +51,10 @@ void paginate(PtMap athletes) {
                 if (i >= LISTINGS_PAGE_SIZE + page){
                     printf("\n");
                     break;
-                } else
-                    mapValuePrint(sortedMapVal[i]);
+                } else{
+                    listGet(sortedList, i, &athlete);
+                    listElemPrint(athlete);
+                }
                 
             }
             printf("\nSHOWALL PAGINATED\n");
@@ -68,7 +74,16 @@ void paginate(PtMap athletes) {
     
     }
 
-    free(sortedMapVal);
+    free(sortedList);
+}
+
+void paginateSet(PtSet statistics){
+
+    int size;
+    setSize(statistics, &size);
+    printf("Size: %d\n", size);
+
+    setPrint(statistics);
 }
 
 void printHostDetails(char** hostData) {
@@ -81,24 +96,26 @@ void printHostDetails(char** hostData) {
 }
 
 //TODO: make this a quick sort
-MapValue* sortMapValues(PtMap athletes) {
-    int mapSizeVar;
-    mapSize(athletes, &mapSizeVar);
-    Athlete temp;
-    Athlete* values = mapValues(athletes);
+PtList sortList(PtList athletes) {
+    int listSizeVar;
+    listSize(athletes, &listSizeVar);
+    PtList sortedList = athletes;
 
-    for (int i = 0; i < mapSizeVar - 1; i++) {
-        for (int j = 0; j < mapSizeVar -i -1; j++) { 
+    for (int i = 0; i < listSizeVar-1; i++) {
+        for (int j = 0; j < listSizeVar-i-1; j++) { 
 
-            if (strcmp(values[j].athleteName, values[j+1].athleteName) > 0) {
-                temp = values[j+1];
-                values[j+1] = values[j];
-                values[j] = temp;
+            Athlete elem, elem2;
+            listGet(sortedList, j, &elem);
+            listGet(sortedList, j+1, &elem2);
+
+            if (strcmp(elem.athleteName, elem2.athleteName) > 0) {
+                listSet(sortedList, j+1, elem, &elem2);
+                listSet(sortedList, j, elem2, &elem);
             }
         }
     }
     
-   return values;
+   return sortedList;
 }
 
 

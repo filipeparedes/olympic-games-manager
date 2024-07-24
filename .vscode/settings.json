@@ -4,6 +4,9 @@
         "string.h": "c",
         "stdbool.h": "c",
         "mapelem.h": "c",
-        "map.h": "c"
+        "map.h": "c",
+        "set.h": "c",
+        "date.h": "c",
+        "list.h": "c"
     }
 }

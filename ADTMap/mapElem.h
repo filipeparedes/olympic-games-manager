@@ -18,14 +18,14 @@
 
 #include <stdbool.h>
 
-#include "../Athlete/athlete.h"
+#include "../Host/host.h"
 #include "../StringWrap/stringWrap.h"
 
 /** Key type definition. Change according to the use-case. */
 typedef StringWrap MapKey;
 
 /** Value type definition. Change according to the use-case. */
-typedef Athlete MapValue;
+typedef Host MapValue;
 
 /**
  * @brief Prints a key.

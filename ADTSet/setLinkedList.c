@@ -16,6 +16,8 @@
 struct node;
 typedef struct node* PtNode;
 
+bool setContains(PtSet set, SetElem elem);
+
 typedef struct node {
     SetElem element;
     PtNode next, prev;
@@ -32,6 +34,13 @@ PtSet setCreate() {
 
     set->header = (PtNode)malloc(sizeof(Node));
     set->trailer = (PtNode)malloc(sizeof(Node));
+
+    if (set->header == NULL || set->trailer == NULL) {
+        free(set->header);
+        free(set->trailer);
+        free(set);
+        return NULL;
+    }
 
     set->header->next = set->trailer;
     set->header->prev = NULL;
@@ -52,10 +61,10 @@ int setAdd(PtSet set, SetElem elem) {
     if (newNode == NULL) return SET_NO_MEMORY;
 
     newNode->element = elem;
-    newNode->next = NULL;
-    newNode->prev = set->trailer;
-    set->trailer->next = newNode;
-    set->trailer = newNode;
+    newNode->next = set->trailer;
+    newNode->prev = set->trailer->prev;
+    set->trailer->prev->next = newNode;
+    set->trailer->prev = newNode;
 
     set->size++;
 
@@ -66,13 +75,15 @@ int setRemove(PtSet set, SetElem elem){
     if (set == NULL) return SET_NULL;
     if (!setContains(set, elem)) return SET_MISSING_ELEM;
 
-    PtNode curr = set->header;
-    while (curr->element != elem) {
+    PtNode curr = set->header->next;
+    while (curr != set->trailer && curr->element != elem) {
         curr =  curr->next;
     }
 
-    PtNode next = curr->next;
+    if (curr == set->trailer) return SET_MISSING_ELEM; 
+
     PtNode prev = curr->prev;
+    PtNode next = curr->next;
     prev->next = next;
     next->prev = prev;
 
@@ -84,12 +95,12 @@ int setRemove(PtSet set, SetElem elem){
 }
 
 bool setContains(PtSet set, SetElem elem){
-    if (set->size == 0 || set == NULL || elem == NULL) return false;
+    if (set == NULL || elem == NULL) return false;
+    if (set->size == 0) return false;
 
-    PtNode curr = set->header;
-    while (curr->next != set->trailer) {
+    PtNode curr = set->header->next;
+    while (curr != set->trailer) {
         if (curr->element == elem) return true;
-
         curr = curr->next;
     }
 
@@ -105,9 +116,11 @@ int setSize(PtSet set, int *ptSize) {
 }
 
 bool setSubset(PtSet subSet, PtSet set) {
-    if (subSet == NULL || set == NULL || subSet->size == 0 || set->size == 0) return false;
+    if (subSet == NULL || set == NULL) return false;
+    if (subSet->size == 0) return true;
+    if (set->size == 0) return false;
 
-    PtNode subCurr = subSet->header;
+    PtNode subCurr = subSet->header->next;
 
     while (subCurr != subSet->trailer) {
         if (!setContains(set, subCurr->element)) return false;
@@ -126,10 +139,11 @@ bool isSetEmpty(PtSet set){
 int setClear(PtSet set) {
     if (set == NULL) return SET_NULL;
 
-    PtNode curr = set->header;
+    PtNode curr = set->header->next;
     while (curr != set->trailer) {
+        PtNode toFree = curr;
         curr = curr->next;
-        free(curr->prev);
+        free(toFree);
     }
 
     set->header->next = set->trailer;
@@ -143,10 +157,12 @@ int setClear(PtSet set) {
 SetElem* setValues(PtSet set){
     if (set == NULL || set->size == 0) return NULL;
 
-    SetElem* array = (SetElem*) malloc(set->size*sizeof(SetElem));
+    SetElem* array = (SetElem*) malloc(set->size * sizeof(SetElem));
+    if (array == NULL) return NULL;
+
     int count = 0;
 
-    PtNode curr = set->header;
+    PtNode curr = set->header->next;
     while (curr != set->trailer) {
         array[count] = curr->element;
         count++;
@@ -157,15 +173,13 @@ SetElem* setValues(PtSet set){
 }
 
 void setPrint(PtSet set) {
-    if (set == NULL) printf("LIST NULL\n");
-    else if (set->size == 0) printf("LIST EMPTY\n");
+    if (set == NULL) printf("SET NULL\n");
+    else if (set->size == 0) printf("SET EMPTY\n");
     else {
-        PtNode curr = set->header;
-
+        PtNode curr = set->header->next;
         while(curr != set->trailer) {
             setElemPrint(curr->element);
             printf("\n");
-
             curr = curr->next;
         }
     }

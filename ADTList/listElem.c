@@ -10,13 +10,9 @@
 #include <stdio.h>
 
 void listElemPrint(ListElem elem) {
-	printf("Disciplina: %s\n", elem.discipline);
-	printf("Edição: %s\n", elem.game);
-	printf("Título: %s\n", elem.eventTitle);
-	printf("Género: %c\n", elem.gender);
-	printf("Medalha: %c\n", elem.medalType);
-	printf("Tipo de Participante: %c\n", elem.participantType);
-	printf("ID Atleta: %s\n", elem.athleteID);
-	printf("País: %s\n", elem.country);
-	printf("Código País: %s\n", elem.countryCode);
+	printf("%40s", elem.athleteID);
+	printf("%60s", elem.athleteName);
+	printf("%15d", elem.gamesParticipations);
+	printf("%30s", elem.firstGame);
+	printf("%12d\n", elem.athleteBirth);
 }

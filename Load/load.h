@@ -20,7 +20,7 @@
 
 #include "../ADTList/list.h"
 #include "../ADTMap/map.h"
-#include "../Host/host.h"
+#include "../Medal/medal.h"
 #include "../Input/input.h"
 #include "../Date/date.h"
 #include "../StringWrap/stringWrap.h"
@@ -28,32 +28,32 @@
 /**
  * @brief Loads the medal.csv file into a list
  * 
- * @param list A list to load the file into
- * @param size an address to an integer, where it will store the length of the list
+ * @param array An array to load the file into
+ * @param size an address to an integer, where it will store the length of the array
  * 
  * @returns Error code, LOAD_OK if load was successful
  */
-int importMedals(PtList list, int* size);
+int importMedals(PtMedal array, int* size);
 
 /**
- * @brief Loads the athletes.csv file into a map
+ * @brief Loads the athletes.csv file into a list
  * 
- * @param map A map to load the file into
- * @param size an address to an integer, where it will store the size of the map
+ * @param list A list to load the file into
+ * @param size an address to an integer, where it will store the size of the list
  * 
  * @return Error code, LOAD_OK if load was successful
  */
-int importAthletes(PtMap map, int* size);
+int importAthletes(PtList list, int* size);
 
 /**
  * @brief Reads the hosts.csv file
  * 
  * @return Error code, LOAD_OK if load was successful
  * 
- * @param size an address to an integer, where it will store the length of the array
- * @param array An array to load the file into
+ * @param size an address to an integer, where it will store the size of the map
+ * @param map An array to load the file into
  */
-int importHosts(PtHost array, int* size);
+int importHosts(PtMap map, int* size);
 
 /**
  * @brief Counts the lines in a csv file

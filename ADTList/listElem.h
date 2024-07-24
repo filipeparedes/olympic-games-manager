@@ -13,10 +13,10 @@
 
 #pragma once
 
-#include "../Medal/medal.h"
+#include "../Athlete/athlete.h"
 
 /** Type definition. Change according to the use-case. */
-typedef Medal ListElem;
+typedef Athlete ListElem;
 
 /**
  * @brief Prints an element.

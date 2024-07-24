@@ -15,35 +15,52 @@
 #pragma once
 
 #include "../ADTMap/map.h"
+#include "../ADTSet/set.h"
+#include "../ADTList/list.h"
 #include "../Host/host.h"
+#include "../Medal/medal.h"
 
 /**
- * @brief Filters a map based on game participations.
- * Map includes all athletes with at least 'participations' participations
+ * @brief Filters a list based on game participations.
+ * List includes all athletes with at least 'participations' participations
  * 
- * @param map the map of athletes to filter
+ * @param athletes the list of athletes to filter
  * @param participations a number of participations, to filter by
- * @return The filtered map
+ * @return The filtered list
  */
-PtMap filterMapByParticipations(PtMap athletes, int participations);
+PtList filterListByParticipations(PtList athletes, int participations);
 
 /**
- * @brief Filters a map based on the first participation's year
- * Map include all athletes whose first participation was at 'year' year.
+ * @brief Filters a list based on the first participation's year
+ * List include all athletes whose first participation was at 'year' year.
  * 
- * @param athletes the map of athletes to filter
+ * @param athletes the list of athletes to filter
  * @param firstYear the year to filter map
- * @return The filtered map
+ * @return The filtered list
  */
-PtMap filterMapByFirstYear(PtMap athletes, char* firstYear);
+PtList filterListByFirstYear(PtList athletes, char* firstYear);
 
 
 /**
  * @brief Retrieves data from hosts, given a specific edition
  * 
- * @param host an array of hosts
- * @param hostSize the size of the array
+ * @param host a map of hosts
  * @param editionName the name of the edition
  * @return An array with the data
  */
-char** getHostData(PtHost host, int hostSize, char* editionName);
+char** getHostData(PtMap host, char* editionName);
+
+
+/**
+ * @brief Retrieves data from medals, given a specific edition
+ * 
+ * @param medals an array of medals
+ * @param medalsSize the size of the array
+ * @param hosts a map of hosts
+ * @param editionName the name of the edition to look for
+ * @return A set of distinct disciplines in a single edition, and statistics for each of them
+ */
+PtSet getDisciplineStatistics(PtMedal medals, int medalsSize, PtMap hosts, char* editionName);
+
+
+

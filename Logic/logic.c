@@ -18,83 +18,82 @@
 #include "logic.h"
 #include "../ADTMap/mapElem.h"
 #include "../ADTMap/map.h"
+#include "../ADTSet/set.h"
+#include "../ADTSet/setElem.h"
+#include "../ADTList/list.h"
+#include "../ADTList/listElem.h"
+#include "../Medal/medal.h"
 
-PtMap filterMapByParticipations(PtMap athletes, int participations){
+PtList filterListByParticipations(PtList athletes, int participations){
 
-    PtMap filteredMap = mapCreate();
-    if (filteredMap == NULL){
-        printf("Failed to create filtered map.\n");
+    int orgListSize;
+    listSize(athletes, &orgListSize);
+    if (orgListSize == 0) {
+        printf("The original list is empty.\n");
         return NULL;
     }
 
-    int orgMapSize;
-    mapSize(athletes, &orgMapSize);
-    if (orgMapSize == 0) {
-        printf("The original map is empty.\n");
+    PtList filteredList = listCreate();
+    if (filteredList == NULL){
+        printf("Failed to create a filtered list.\n");
         return NULL;
     }
 
-    StringWrap* keys = mapKeys(athletes);
-
-    for (int i = 0; i < orgMapSize; i++) {
+    for (int i = 0, j=0; i < orgListSize; i++) {
         Athlete athlete;
 
-        if (mapGet(athletes, keys[i], &athlete) == MAP_OK) {
+        if (listGet(athletes, i, &athlete) == LIST_OK) {
             if (athlete.gamesParticipations >= participations){
-                mapPut(filteredMap, keys[i], athlete);
+                listAdd(filteredList, j++, athlete);
             }
         }
     }
 
-    free(keys);
-    return filteredMap;
+    return filteredList;
 }
 
-PtMap filterMapByFirstYear(PtMap athletes, char* firstYear){
+PtList filterListByFirstYear(PtList athletes, char* firstYear){
 
-    PtMap filteredMap = mapCreate();
-    if (filteredMap == NULL){
-        printf("Failed to create filtered map.\n");
+    int orgListSize;
+    listSize(athletes, &orgListSize);
+    if (orgListSize == 0) {
+        printf("The original list is empty.\n");
         return NULL;
     }
 
-    int orgMapSize;
-    mapSize(athletes, &orgMapSize);
-    if (orgMapSize == 0) {
-        printf("The original map is empty.\n");
+    PtList filteredList = listCreate();
+    if (filteredList == NULL){
+        printf("Failed to create filtered list.\n");
         return NULL;
     }
 
-    StringWrap* keys = mapKeys(athletes);
-    if (keys == NULL) {
-        printf("Failed to retrieve keys from the map.\n");
-        return NULL;
-    }
-
-    for (int i = 0; i < orgMapSize; i++) {
+    for (int i = 0, j=0; i < orgListSize; i++) {
         Athlete athlete;
 
-        if (mapGet(athletes, keys[i], &athlete) == MAP_OK) {
+        if (listGet(athletes, i, &athlete) == LIST_OK) {
             int len = strlen(athlete.firstGame);
             if (len >= 4) { 
-                char* year = athlete.firstGame + (len - 4); //Extracts the last four digits of the string "athlete.firstGame"
+                char* year = athlete.firstGame + (len - 4); //Extracts the last four digits of the string 
                 if (strcmp(year, firstYear) == 0){
-                    mapPut(filteredMap, keys[i], athlete);
+                    listAdd(filteredList, j++, athlete);
                 }
             }
         }
     }
-
-    free(keys);
-    return filteredMap;
+    return filteredList;
 }
 
-char** getHostData(PtHost host, int hostSize, char* editionName) {
+char** getHostData(PtMap hosts, char* editionName){
 
-    if (hostSize == 0){
-        printf("The original array is empty.\n");
+    int orgMapSize;
+    mapSize(hosts, &orgMapSize);
+
+    if (orgMapSize == 0){
+        printf("The original map is empty.\n");
         return NULL;
     }
+
+    MapKey* keys = mapKeys(hosts);
 
     char** data = (char**)malloc(4 * sizeof(char*));
 
@@ -103,6 +102,7 @@ char** getHostData(PtHost host, int hostSize, char* editionName) {
         return NULL;
     }
 
+    //Aloca memória para as strings dentro do array
     for (int i = 0; i < 4; i++) {
         data[i] = (char*)malloc(50 * sizeof(char));
         if (data[i] == NULL) {
@@ -118,9 +118,11 @@ char** getHostData(PtHost host, int hostSize, char* editionName) {
     Host searchedHost;
     bool found = false;
     
-    for (int i = 0; i<hostSize; i++) {
-        if (strcmp(host[i].gameName,editionName) == 0){
-            searchedHost = host[i];
+    for (int i = 0; i<orgMapSize; i++) {
+        Host host;
+        mapGet(hosts, keys[i], &host);
+        if (strcmp(host.gameName,editionName) == 0){
+            searchedHost = host;
             found = true;
         }
     }
@@ -147,4 +149,51 @@ char** getHostData(PtHost host, int hostSize, char* editionName) {
     sprintf(data[3], "%d", dayDif);
 
     return data;
+}
+
+PtSet getDisciplineStatistics(PtMedal medals, int medalsSize, PtMap hosts, char* editionName) {
+    int hostSize;
+    char* gameSlug;
+    bool found = false;
+    mapSize(hosts, &hostSize);
+
+    if (medalsSize == 0) {
+        printf("Medals array is empty.\n");
+        return NULL;
+    }
+    if (hostSize == 0){
+        printf("Hosts map is empty.\n");
+        return NULL;
+    }
+
+    PtSet set = setCreate();
+
+    if (set == NULL) {
+        printf("Failed to create the set.\n");
+        return NULL;
+    }
+
+    MapKey* keys = mapKeys(hosts);
+
+    for(int i = 0; i<hostSize; i++) {
+        Host host;
+        mapGet(hosts, keys[i], &host);
+        if (strcmp(host.gameName, editionName) == 0) {
+            gameSlug = host.gameName;
+            found = true;
+        }
+    }
+
+    if (!found) {
+        printf("No editions found.\n");
+        return NULL;
+    }
+
+    for (int i = 0; i<medalsSize; i++) {
+        if (strcmp(medals[i].game, gameSlug) == 0) {
+            setAdd(set, medals[i].discipline);
+        }
+    }
+
+    return set;
 }
