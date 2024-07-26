@@ -184,7 +184,14 @@ int main() {
             printTopN(topNList, n, topNSize);
         }
         else if (strcmp(command, "medals_won") == 0) {
-            printf("Not implemented yet.\n");
+            char country[50], gameSeason[10];
+            int year;
+            printf("Insert the country: ");
+            readString(country, 50);
+            printf("Insert the starting year (YYYY): ");
+            readInteger(&year);
+            printf("Insert a game season (Winter/Summer): ");
+            readString(gameSeason, 10);
         }
         else if (strcmp(command, "quit") == 0) {
             quit = true;
