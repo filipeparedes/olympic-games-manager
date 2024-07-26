@@ -50,3 +50,15 @@ void printHostDetails(char** hostData);
  */
 PtList sortList(PtList athletes);
 
+
+/**
+ * @brief 
+ * 
+ * @param medalsStatistics 
+ * @param medalsStatsSize 
+ * @param country 
+ * @param athleteID 
+ * @param participations 
+ * @param birthYear 
+ */
+void printAthleteInfo(char** medalsStatistics, int medalsStatsSize, char* country, char* athleteID, int participations, int birthYear);

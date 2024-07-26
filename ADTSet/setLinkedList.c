@@ -76,7 +76,7 @@ int setRemove(PtSet set, SetElem elem){
     if (!setContains(set, elem)) return SET_MISSING_ELEM;
 
     PtNode curr = set->header->next;
-    while (curr != set->trailer && curr->element != elem) {
+    while (curr != set->trailer && strcmp(curr->element.disciplineName, elem.disciplineName) != 0) {
         curr =  curr->next;
     }
 
@@ -95,12 +95,12 @@ int setRemove(PtSet set, SetElem elem){
 }
 
 bool setContains(PtSet set, SetElem elem){
-    if (set == NULL || elem == NULL) return false;
+    if (set == NULL) return false;
     if (set->size == 0) return false;
 
     PtNode curr = set->header->next;
     while (curr != set->trailer) {
-        if (curr->element == elem) return true;
+        if (strcmp(curr->element.disciplineName,elem.disciplineName) == 0) return true;
         curr = curr->next;
     }
 

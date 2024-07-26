@@ -15,5 +15,7 @@
 
 
 void setElemPrint(SetElem elem) {
-    printf("%s", elem);
+    printf("%30s", elem.disciplineName);
+	printf("%35s", elem.topMedalsCountry);
+	printf("%15f", elem.womenRatio);
 }

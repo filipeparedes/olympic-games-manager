@@ -149,11 +149,23 @@ int main() {
             readString(editionName, 50);
 
             PtSet set = getDisciplineStatistics(medalsArray, medalsSize, hostsMap, editionName);
+            int size;
+            setSize(set, &size);
 
-            paginateSet(set);
+            if(size > 0) paginateSet(set);
         }
         else if (strcmp(command, "athlete_info") == 0) {
-            printf("Not implemented yet.\n");
+            char athlete[50];
+            printf("Insert an athleteID: ");
+            readString(athlete, 50);
+
+            int participations, birthYear, medalsStatsSize;
+            char country[30];
+
+            char** medalsStatistics = getAthleteInfo(medalsArray, medalsSize, athletesList, hostsMap, athlete, country, &participations, &birthYear, &medalsStatsSize);
+
+            if (medalsStatistics != NULL)
+            printAthleteInfo(medalsStatistics, medalsStatsSize, country, athlete, participations, birthYear);
         }
         else if (strcmp(command, "topn") == 0) {
             printf("Not implemented yet.\n");

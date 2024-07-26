@@ -23,6 +23,7 @@
 #include "../ADTList/list.h"
 #include "../ADTList/listElem.h"
 #include "../Medal/medal.h"
+#include "../DisciplineStats/disciplinestats.h"
 
 PtList filterListByParticipations(PtList athletes, int participations){
 
@@ -179,21 +180,138 @@ PtSet getDisciplineStatistics(PtMedal medals, int medalsSize, PtMap hosts, char*
         Host host;
         mapGet(hosts, keys[i], &host);
         if (strcmp(host.gameName, editionName) == 0) {
-            gameSlug = host.gameName;
+            gameSlug = keys[i].text;
             found = true;
         }
     }
 
     if (!found) {
         printf("No editions found.\n");
+        setDestroy(&set);
         return NULL;
     }
 
     for (int i = 0; i<medalsSize; i++) {
+        DisciplineStats dStats;
+
         if (strcmp(medals[i].game, gameSlug) == 0) {
-            setAdd(set, medals[i].discipline);
+            strcpy(dStats.disciplineName, medals[i].discipline);
         }
     }
 
     return set;
+}
+
+char** getAthleteInfo(PtMedal medals, int medalsSize, PtList athletes, PtMap hosts, char* athleteID, char* country, int* participations, int* birthYear, int* size) {
+    int athletesSize;
+    int hostsSize;
+    listSize(athletes, &athletesSize);
+    mapSize(hosts, &hostsSize);
+    
+    if (medalsSize == 0) { printf("Medals array is empty.\n"); return NULL; }    
+    if (athletesSize == 0) { printf("Athletes list is empty.\n"); return NULL; }
+    if (hostsSize == 0) { printf("Hosts map is empty.\n"); return NULL; }
+
+    bool foundAthlete = false;
+
+    for (int i = 0; i < athletesSize; i++) {
+        Athlete athlete;
+        listGet(athletes, i, &athlete);
+        if (strcmp(athlete.athleteID, athleteID) == 0) {
+            *participations = athlete.gamesParticipations;
+            *birthYear = athlete.athleteBirth;
+            foundAthlete = true;
+            break; 
+        }
+    }
+
+    if (!foundAthlete) {
+        printf("Athlete %s was not found\n", athleteID);
+        return NULL;
+    }
+
+    int count = 0;
+    char** data = (char**)malloc(0);
+    if (data == NULL) {
+        printf("Insufficient memory to allocate inicial array.\n");
+        return NULL;
+    }
+
+    char discipline[50], edition[50], medalType[10];
+    MapKey* keys = mapKeys(hosts);
+
+    bool countryFound = false;
+    for (int i = 0; i < medalsSize; i++) {
+        if (strcmp(medals[i].athleteID, athleteID) == 0) {
+            if (!countryFound) {
+                strcpy(country, medals[i].country);
+                countryFound = true;
+            }
+
+            count++;
+            char** newData = realloc(data, count * sizeof(char*));
+            if (newData == NULL) {
+                printf("Insufficient memory to reallocate array.\n");
+                
+                for (int j = 0; j < count - 1; j++) {
+                    free(data[j]);
+                }
+                free(data);
+                return NULL;
+            }
+            data = newData;
+
+            strcpy(discipline, medals[i].discipline);
+            switch (medals[i].medalType) {
+                case 'G': strcpy(medalType, "GOLD"); break;
+                case 'S': strcpy(medalType, "SILVER"); break;
+                case 'B': strcpy(medalType, "BRONZE"); break;
+                default: strcpy(medalType, "UNKNOWN"); break;
+            }
+
+            for (int j = 0; j < hostsSize; j++) {
+                if (strcmp(keys[j].text, medals[i].game) == 0) {
+                    Host host;
+                    mapGet(hosts, keys[j], &host);
+                    strcpy(edition, host.gameName);
+                    break; 
+                }
+            }
+
+            char* piece1 = ": ";
+            char* piece2 = " MEDAL; ";
+
+            int totalLength = strlen(edition) + strlen(piece1) + strlen(medalType) + strlen(piece2) + strlen(discipline) + 1;
+            char* line = (char*)malloc(totalLength * sizeof(char));
+            if (line == NULL) {
+                fprintf(stderr, "Memory allocation for line failed\n");
+                
+                for (int j = 0; j < count; j++) {
+                    free(data[j]);
+                }
+                free(data);
+                return NULL;
+            }
+
+            strcpy(line, edition);
+            strcat(line, piece1);
+            strcat(line, medalType);
+            strcat(line, piece2);
+            strcat(line, discipline);
+
+            data[count - 1] = line;
+        }
+    }
+
+    if (!countryFound) {
+        printf("Athlete %s did not win any medals\n", athleteID);
+        for (int j = 0; j < count; j++) {
+            free(data[j]);
+        }
+        free(data);
+        return NULL;
+    }
+
+    *size = count;
+    return data;
 }

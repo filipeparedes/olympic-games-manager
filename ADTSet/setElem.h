@@ -18,9 +18,10 @@
 #pragma once
 
 #include <string.h>
+#include "../DisciplineStats/disciplinestats.h"
 
 /** Type definition. Change according to the use-case. */
-typedef char* SetElem;
+typedef DisciplineStats SetElem;
 
 /**
  * @brief Prints an element.

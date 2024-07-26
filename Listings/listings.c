@@ -81,7 +81,12 @@ void paginateSet(PtSet statistics){
 
     int size;
     setSize(statistics, &size);
-    printf("Size: %d\n", size);
+    printf("%d DISCIPLINES FOUND\n\n", size);
+
+    printf("%30s", "DISCIPLINE");
+	printf("%35s", "TOP MEDALS COUNTRY");
+    printf("%15s", "PARTICIPATIONS");
+    printf("===========================================================================================================================\n");
 
     setPrint(statistics);
 }
@@ -95,7 +100,19 @@ void printHostDetails(char** hostData) {
     printf("Duration of the event (days): %s\n\n", hostData[3]);
 }
 
-//TODO: make this a quick sort
+void printAthleteInfo(char** medalsStatistics, int medalsStatsSize, char* country, char* athleteID, int participations, int birthYear) {
+    printf("\n=============== ATHLETE INFO ================\n");
+    printf("AthleteID: %s\n", athleteID);
+    printf("Birth Year: %d\n", birthYear);
+    printf("Country: %s\n", country);
+    printf("Number of Participations: %d\n\n", participations);
+    printf("=================== MEDALS ===================\n");
+
+    for (int i = 0; i<medalsStatsSize; i++) {
+        printf("%s\n", medalsStatistics[i]);
+    }
+}
+
 PtList sortList(PtList athletes) {
     int listSizeVar;
     listSize(athletes, &listSizeVar);

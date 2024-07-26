@@ -62,5 +62,21 @@ char** getHostData(PtMap host, char* editionName);
  */
 PtSet getDisciplineStatistics(PtMedal medals, int medalsSize, PtMap hosts, char* editionName);
 
+/**
+ * @brief Rerieves info about a certain athlete.
+ * 
+ * @param medals [IN] an array of medals
+ * @param medalsSize [IN] the size of the array
+ * @param athletes [IN] a list of athletes
+ * @param hosts [IN] a map of hosts
+ * @param athleteID [IN] the ID of the athlete to search for
+ * @param country [OUT] a pointer to an array of characters, to store the country
+ * @param participations [OUT] a pointer to an int, to store the participations
+ * @param birthYear [OUT] a pointer to an int, to store the birth year
+ * @param size [OUT] a pointer to an int, to store the size of the returned array of strings
+ * @return an array of strings, containing statistics for each of the medals won
+ */
+char** getAthleteInfo(PtMedal medals, int medalsSize, PtList athletes, PtMap hosts, char* athleteID, char* country, int* participations, int* birthYear, int* size);
+
 
 
