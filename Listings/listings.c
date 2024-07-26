@@ -22,6 +22,7 @@
 #include "../ADTList/list.h"
 #include "../ADTSet/set.h"
 #include "../Athlete/athlete.h"
+#include "../TopNStats/topnstats.h"
 
 PtList sortList(PtList athletes);
 
@@ -111,6 +112,50 @@ void printAthleteInfo(char** medalsStatistics, int medalsStatsSize, char* countr
     for (int i = 0; i<medalsStatsSize; i++) {
         printf("%s\n", medalsStatistics[i]);
     }
+}
+
+void printTopN(PtTopN topNList, int topNSize, int n) {
+        printf("\n\n%-40s | %-12s | %-30s | %-28s\n", "Country", "Total medals", "Average medals by game edition", "Average medals by game day");
+        printf("--------------------------------------------------------------------------------------------------------------------------\n");
+
+        PtTopN sortedTopN = sortTopN(topNList, topNSize);
+
+        if (n>topNSize) {
+            for (int i = 0; i<topNSize; i++) {
+             printf("%-40s | %-12d | %-30.2f | %-28.2f\n", sortedTopN[i].country, sortedTopN[i].totalMedals, sortedTopN[i].avgMedalsEdition, sortedTopN[i].avgMedalsGameDays);
+            }
+
+        } else {
+            for (int i = 0; i<n; i++) {
+             printf("%-40s | %-12d | %-30.2f | %-28.2f\n", sortedTopN[i].country, sortedTopN[i].totalMedals, sortedTopN[i].avgMedalsEdition, sortedTopN[i].avgMedalsGameDays);
+            }
+            printf("\n\nCould not find more than %d results.\n", topNSize);
+        }
+}
+
+PtTopN sortTopN(PtTopN topNList, int topNSize){
+    PtTopN sortedArray = topNList;
+
+    for (int i = 0; i<topNSize; i++) {
+        for (int j = 0; j<topNSize; j++) {
+            if (sortedArray[j].totalMedals < sortedArray[j+1].totalMedals) {
+                TopNStats temp;
+                temp = sortedArray[j];
+                sortedArray[j] = sortedArray[j+1];
+                sortedArray[j+1] = temp; 
+            } else if (sortedArray[j].totalMedals == sortedArray[j+1].totalMedals) {
+                if (strcmp(sortedArray[j].country, sortedArray[j+1].country) > 0) {
+                    TopNStats temp;
+                    temp = sortedArray[j];
+                    sortedArray[j] = sortedArray[j+1];
+                    sortedArray[j+1] = temp;
+                }
+
+            }
+        }
+    }
+
+    return sortedArray;
 }
 
 PtList sortList(PtList athletes) {

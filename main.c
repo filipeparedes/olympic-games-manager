@@ -129,7 +129,6 @@ int main() {
                 paginate(filteredList);
             }
 
-            free(filteredList);
         }
         else if (strcmp(command, "show_host") == 0) {
             char editionName[50];
@@ -168,7 +167,21 @@ int main() {
             printAthleteInfo(medalsStatistics, medalsStatsSize, country, athlete, participations, birthYear);
         }
         else if (strcmp(command, "topn") == 0) {
-            printf("Not implemented yet.\n");
+            int startYear, endYear, n, topNSize;
+            char gameSeason[10];
+            printf("Insert a game season (Winter/Summer): ");
+            readString(gameSeason, 10);
+            printf("Insert the starting year (YYYY): ");
+            readInteger(&startYear);
+            printf("Insert the ending year (YYYY): ");
+            readInteger(&endYear);
+            printf("Insert the amount of results to show up: ");
+            readInteger(&n);
+
+            PtTopN topNList = getTopNCountries(medalsArray, medalsSize, hostsMap, athletesList, gameSeason, startYear, endYear, &topNSize);
+
+            if (topNList != NULL)
+            printTopN(topNList, n, topNSize);
         }
         else if (strcmp(command, "medals_won") == 0) {
             printf("Not implemented yet.\n");

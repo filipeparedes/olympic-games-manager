@@ -24,6 +24,7 @@
 #include "../ADTList/listElem.h"
 #include "../Medal/medal.h"
 #include "../DisciplineStats/disciplinestats.h"
+#include "../TopNStats/topnstats.h"
 
 PtList filterListByParticipations(PtList athletes, int participations){
 
@@ -203,6 +204,7 @@ PtSet getDisciplineStatistics(PtMedal medals, int medalsSize, PtMap hosts, char*
 }
 
 char** getAthleteInfo(PtMedal medals, int medalsSize, PtList athletes, PtMap hosts, char* athleteID, char* country, int* participations, int* birthYear, int* size) {
+
     int athletesSize;
     int hostsSize;
     listSize(athletes, &athletesSize);
@@ -314,4 +316,157 @@ char** getAthleteInfo(PtMedal medals, int medalsSize, PtList athletes, PtMap hos
 
     *size = count;
     return data;
+}
+
+PtTopN getTopNCountries(PtMedal medals, int medalsSize, PtMap hosts, PtList athletes, char gameSeason[10], int startYear, int endYear, int* size) {
+        int hostsSize, athletesSize;
+    mapSize(hosts, &hostsSize);
+    listSize(athletes, &athletesSize);
+    if (medalsSize == 0) { printf("Medals array is empty.\n"); return NULL; }
+    if (hostsSize == 0) { printf("Hosts map is empty.\n"); return NULL; }
+    if (athletesSize == 0) { printf("Athletes list is empty.\n"); return NULL; }
+
+    MapKey* keys = mapKeys(hosts);
+
+    char** allowedGames = (char**)malloc(0);
+    int gamesCount = 0;
+
+    for (int i = 0; i < hostsSize; i++) {
+        Host host;
+        if (mapGet(hosts, keys[i], &host) == MAP_OK) {
+            if (strcmp(host.season, gameSeason) == 0 &&
+                host.gameStartDate.year >= startYear &&
+                host.gameEndDate.year <= endYear) {
+
+                gamesCount++;
+                char** newAllowedGames = realloc(allowedGames, gamesCount * sizeof(char*));
+                if (newAllowedGames == NULL) {
+                    printf("Insufficient memory to reallocate array.\n");
+                    for (int j = 0; j < gamesCount - 1; j++) {
+                        free(allowedGames[j]);
+                    }
+                    free(allowedGames);
+                    return NULL;
+                }
+                allowedGames = newAllowedGames;
+                allowedGames[gamesCount - 1] = strdup(keys[i].text); 
+            }
+        }
+    }
+
+    PtTopN topNList = (TopNStats*)malloc(sizeof(TopNStats));
+    if (!topNList) {
+        printf("Insufficient memory to allocate TopN list.\n");
+        for (int j = 0; j < gamesCount; j++) {
+            free(allowedGames[j]);
+        }
+        free(allowedGames);
+        return NULL;
+    }
+
+    int topNCount = 0;
+
+    for (int i = 0; i < medalsSize; i++) {
+        for (int j = 0; j < gamesCount; j++) {
+            if (strcmp(medals[i].game, allowedGames[j]) == 0) {
+                int found = 0;
+                for (int p = 0; p < topNCount; p++) {
+                    if (strcmp(medals[i].country, topNList[p].country) == 0) {
+                        found = 1;
+
+                        if (medals[i].medalType == 'G')
+                            topNList[p].totalMedals += 3;
+                        else if (medals[i].medalType == 'S')
+                            topNList[p].totalMedals += 2;
+                        else if (medals[i].medalType == 'B')
+                            topNList[p].totalMedals += 1;
+
+                        for (int k = 0; k < athletesSize; k++) {
+                            Athlete athlete;
+                            if (listGet(athletes, k, &athlete) == LIST_OK) {
+                                if (strcmp(athlete.athleteID, medals[i].athleteID) == 0) {
+                                    topNList[p].avgMedalsEdition = (float)topNList[p].totalMedals / athlete.gamesParticipations;
+                                }
+                            }
+                        }
+
+                        for (int x = 0; x < hostsSize; x++) {
+                            Host host;
+                            if (strcmp(keys[x].text, medals[i].game) == 0) {
+                                if (mapGet(hosts, keys[x], &host) == MAP_OK) {
+                                    int days = (host.gameEndDate.month - host.gameStartDate.month) * 30 + (host.gameEndDate.day - host.gameStartDate.day);
+                                    topNList[p].totalDays += days;
+                                }
+                            }
+                        }
+
+                        topNList[p].avgMedalsGameDays = (float)topNList[p].totalMedals / topNList[p].totalDays;
+                        break;
+                    }
+                }
+
+                if (!found) {
+                    topNCount++;
+                    TopNStats* newTopNList = realloc(topNList, topNCount * sizeof(TopNStats));
+                    if (newTopNList == NULL) {
+                        printf("Insufficient memory to reallocate TopN array.\n");
+                        for (int j = 0; j < gamesCount; j++) {
+                            free(allowedGames[j]);
+                        }
+                        free(allowedGames);
+                        free(topNList);
+                        return NULL;
+                    }
+                    topNList = newTopNList;
+
+                    TopNStats pivot = { .country = "", .totalMedals = 0, .totalDays = 0, .avgMedalsEdition = 0.0f, .avgMedalsGameDays = 0.0f };
+                    strcpy(pivot.country, medals[i].country);
+
+                    if (medals[i].medalType == 'G')
+                        pivot.totalMedals += 3;
+                    else if (medals[i].medalType == 'S')
+                        pivot.totalMedals += 2;
+                    else if (medals[i].medalType == 'B')
+                        pivot.totalMedals += 1;
+
+                    for (int k = 0; k < athletesSize; k++) {
+                        Athlete athlete;
+                        if (listGet(athletes, k, &athlete) == LIST_OK) {
+                            if (strcmp(athlete.athleteID, medals[i].athleteID) == 0) {
+                                pivot.avgMedalsEdition = (float)pivot.totalMedals / athlete.gamesParticipations;
+                            }
+                        }
+                    }
+
+                    for (int x = 0; x < hostsSize; x++) {
+                        Host host;
+                        if (strcmp(keys[x].text, medals[i].game) == 0) {
+                            if (mapGet(hosts, keys[x], &host) == MAP_OK) {
+                                int days = (host.gameEndDate.month - host.gameStartDate.month) * 30 + (host.gameEndDate.day - host.gameStartDate.day);
+                                pivot.totalDays += days;
+                            }
+                        }
+                    }
+
+                    pivot.avgMedalsGameDays = (float)pivot.totalMedals / pivot.totalDays;
+
+                    topNList[topNCount - 1] = pivot;
+                }
+            }
+        }
+    }
+
+    for (int j = 0; j < gamesCount; j++) {
+        free(allowedGames[j]);
+    }
+    free(allowedGames);
+
+    if (topNCount == 0) {
+        printf("No data found for the requested period.\n");
+        return NULL;
+    }
+
+    *size = topNCount;
+
+    return topNList;
 }

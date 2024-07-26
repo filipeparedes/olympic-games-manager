@@ -19,6 +19,7 @@
 #include "../ADTList/list.h"
 #include "../Host/host.h"
 #include "../Medal/medal.h"
+#include "../TopNStats/topnstats.h"
 
 /**
  * @brief Filters a list based on game participations.
@@ -77,6 +78,22 @@ PtSet getDisciplineStatistics(PtMedal medals, int medalsSize, PtMap hosts, char*
  * @return an array of strings, containing statistics for each of the medals won
  */
 char** getAthleteInfo(PtMedal medals, int medalsSize, PtList athletes, PtMap hosts, char* athleteID, char* country, int* participations, int* birthYear, int* size);
+
+/**
+ * @brief Retrieves top countries in a certain criteria
+ * 
+ * @param medals an array of medals
+ * @param medalsSize the size of the array
+ * @param hosts a map of hosts
+ * @param athletes a list of athletes
+ * @param gameSeason the season of the game to be used as a criteria
+ * @param startYear the starting year to be used in the year gap criteria
+ * @param endYear the ending year to be used in the year gap criteria
+ * @param size [OUT] a pointer to an int, to store the size of the returned array
+ * 
+ * @return An array of the results
+ */
+PtTopN getTopNCountries(PtMedal medals, int medalsSize, PtMap hosts, PtList athletes, char gameSeason[10], int startYear, int endYear, int* size);
 
 
 

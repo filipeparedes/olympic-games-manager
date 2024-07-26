@@ -17,6 +17,7 @@
 #include "../ADTMap/mapElem.h"
 #include "../ADTSet/set.h"
 #include "../ADTList/list.h"
+#include "../TopNStats/topnstats.h"
 
 /**
  * @brief Displays all athlete information in the list.
@@ -52,13 +53,34 @@ PtList sortList(PtList athletes);
 
 
 /**
- * @brief 
+ * @brief  Prints the athlete info.
  * 
- * @param medalsStatistics 
- * @param medalsStatsSize 
- * @param country 
- * @param athleteID 
- * @param participations 
- * @param birthYear 
+ * @param medalsStatistics medals statistics array of strings
+ * @param medalsStatsSize the size of the array of strings
+ * @param country the country of the athlete
+ * @param athleteID the id of the athlete
+ * @param participations the number of participations
+ * @param birthYear the athlete's birth year.
  */
 void printAthleteInfo(char** medalsStatistics, int medalsStatsSize, char* country, char* athleteID, int participations, int birthYear);
+
+
+/**
+ * @brief Prints a TopN array.
+ * 
+ * @param topNList topN array to print
+ * @param n the number of results to print
+ * @param topNSize the size of the array
+ * 
+ */
+void printTopN(PtTopN topNList, int topNSize, int n);
+
+
+/**
+ * @brief Sorts a topN array by totalMedals in descending order, and by country name in case of tie
+ * 
+ * @param topNList the array to sort
+ * @param topNSize the size of the array
+ * @return the sorted array
+ */
+PtTopN sortTopN(PtTopN topNList, int topNSize);
