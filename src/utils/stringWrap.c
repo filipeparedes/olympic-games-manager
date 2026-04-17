@@ -8,7 +8,7 @@
  * @copyright Copyright (c) 2024
  * 
  */
-#include "stringWrap.h"
+#include "utils/stringWrap.h"
 #include <string.h>
 
 StringWrap stringWrapCreate(char *str) {

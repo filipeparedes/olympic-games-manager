@@ -16,7 +16,7 @@
 #include <ctype.h>
 #include <stdbool.h>
 
-#include "host.h"
-#include "../Date/date.h"
+#include "domain/host.h"
+#include "utils/date.h"
 
 

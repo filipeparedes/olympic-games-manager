@@ -20,12 +20,12 @@
 #include <ctype.h>
 #include <stdbool.h>
 
-#include "load.h"
-#include "../Date/date.h"
-#include "../Medal/medal.h"
+#include "io/load.h"
+#include "utils/date.h"
+#include "domain/medal.h"
 
 int importMedals(PtMedal array, int* size){
-    FILE* file = fopen("Medal/medals.csv", "r");
+    FILE* file = fopen("data/medals.csv", "r");
     if (file == NULL) return FILE_NOT_FOUND;
     if (array == NULL) return ARRAY_NULL;
 
@@ -62,7 +62,7 @@ int importMedals(PtMedal array, int* size){
 }
 
 int importAthletes(PtList list, int* size){
-    FILE* file = fopen("Athlete/athletes.csv", "r");
+    FILE* file = fopen("data/athletes.csv", "r");
     if (file == NULL) return FILE_NOT_FOUND;
     if (list == NULL) return LIST_NULL;
 
@@ -97,7 +97,7 @@ int importAthletes(PtList list, int* size){
 }
 
 int importHosts(PtMap map, int* size){
-    FILE* file = fopen("Host/hosts.csv", "r");
+    FILE* file = fopen("data/hosts.csv", "r");
     if (file == NULL) return FILE_NOT_FOUND;
     if (map == NULL) return MAP_NULL;
 

@@ -16,4 +16,4 @@
 #include <ctype.h>
 #include <stdbool.h>
 
-#include "athlete.h"
+#include "domain/athlete.h"

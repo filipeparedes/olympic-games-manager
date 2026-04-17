@@ -16,8 +16,8 @@
 #include <ctype.h>
 #include <stdbool.h>
 
-#include "date.h"
-#include "../Input/input.h"
+#include "utils/date.h"
+#include "io/input.h"
 
 int stringToDate(char* str, Date* date){
     if (str == NULL) return STRING_NULL;

@@ -8,8 +8,8 @@
  * @bug No known bugs.
  */
 
-#include "list.h"
-#include "listElem.h"
+#include "adt/list.h"
+#include "adt/listElem.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>

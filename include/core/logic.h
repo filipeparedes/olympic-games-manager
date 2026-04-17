@@ -14,12 +14,12 @@
 
 #pragma once
 
-#include "../ADTMap/map.h"
-#include "../ADTSet/set.h"
-#include "../ADTList/list.h"
-#include "../Host/host.h"
-#include "../Medal/medal.h"
-#include "../TopNStats/topnstats.h"
+#include "adt/map.h"
+#include "adt/set.h"
+#include "adt/list.h"
+#include "domain/host.h"
+#include "domain/medal.h"
+#include "domain/topnstats.h"
 
 /**
  * @brief Filters a list based on game participations.

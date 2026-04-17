@@ -12,7 +12,7 @@
 
 #pragma once
 
-#include "../Date/date.h"
+#include "utils/date.h"
 
 #define MAX_GAME_LOCATION_LENGTH 50
 #define MAX_GAME_NAME_LENGTH 50

@@ -18,7 +18,7 @@
 #include <ctype.h>
 #include <stdbool.h>
 
-#include "../Input/input.h"
+#include "io/input.h"
 
 #define DATE_OK 0
 #define DATE_NULL 1

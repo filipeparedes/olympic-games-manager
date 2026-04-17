@@ -13,7 +13,7 @@
 
 #pragma once
 
-#include "../Athlete/athlete.h"
+#include "domain/athlete.h"
 
 /** Type definition. Change according to the use-case. */
 typedef Athlete ListElem;

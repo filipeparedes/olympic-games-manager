@@ -9,7 +9,7 @@
  * 
  */
 
-#include "setElem.h"
+#include "adt/setElem.h"
 #include <stdio.h>
 #include <string.h>
 

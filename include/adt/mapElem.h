@@ -18,8 +18,8 @@
 
 #include <stdbool.h>
 
-#include "../Host/host.h"
-#include "../StringWrap/stringWrap.h"
+#include "domain/host.h"
+#include "utils/stringWrap.h"
 
 /** Key type definition. Change according to the use-case. */
 typedef StringWrap MapKey;

@@ -13,16 +13,16 @@
 #include <stdio.h> 
 #include <stdlib.h>
 
-#include "./Input/input.h"
-#include "./Host/host.h"
-#include "./Medal/medal.h"
-#include "./Athlete/athlete.h"
-#include "./StringWrap/stringWrap.h"
-#include "./ADTMap/map.h"
-#include "./ADTList/list.h"
-#include "./Load/load.h"
-#include "./Listings/listings.h"
-#include "./Logic/logic.h"
+#include "io/input.h"
+#include "domain/host.h"
+#include "domain/medal.h"
+#include "domain/athlete.h"
+#include "utils/stringWrap.h"
+#include "adt/map.h"
+#include "adt/list.h"
+#include "io/load.h"
+#include "io/listings.h"
+#include "core/logic.h"
 
 #define ARRAY_NO_MEMORY 1
 
@@ -37,7 +37,7 @@ int main() {
     PtList athletesList = listCreate();
     PtMap hostsMap = mapCreate();
 
-    FILE* medalsFile = fopen("Medal/medals.csv", "r");
+    FILE* medalsFile = fopen("data/medals.csv", "r");
     if (medalsFile == NULL) return FILE_NOT_FOUND;
     PtMedal medalsArray = (Medal*) malloc(sizeof(Medal)* countFileLines(medalsFile));
     fclose(medalsFile);

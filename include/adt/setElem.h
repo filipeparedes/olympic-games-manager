@@ -18,7 +18,7 @@
 #pragma once
 
 #include <string.h>
-#include "../DisciplineStats/disciplinestats.h"
+#include "domain/disciplinestats.h"
 
 /** Type definition. Change according to the use-case. */
 typedef DisciplineStats SetElem;

@@ -19,7 +19,7 @@
 #define SET_DUPLICATE       5
 #define SET_MISSING_ELEM    6
 
-#include "setElem.h"
+#include "adt/setElem.h"
 #include <string.h>
 #include <stdbool.h>
 

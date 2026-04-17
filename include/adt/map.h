@@ -17,7 +17,7 @@
 #define MAP_FULL          4
 #define MAP_UNKNOWN_KEY	  5
 
-#include "mapElem.h"
+#include "adt/mapElem.h"
 #include <stdbool.h>
 
 /** Forward declaration of the data structure. */

@@ -16,13 +16,13 @@
 #include <ctype.h>
 #include <stdbool.h>
 
-#include "listings.h"
-#include "../ADTMap/map.h"
-#include "../ADTMap/mapElem.h"
-#include "../ADTList/list.h"
-#include "../ADTSet/set.h"
-#include "../Athlete/athlete.h"
-#include "../TopNStats/topnstats.h"
+#include "io/listings.h"
+#include "adt/map.h"
+#include "adt/mapElem.h"
+#include "adt/list.h"
+#include "adt/set.h"
+#include "domain/athlete.h"
+#include "domain/topnstats.h"
 
 PtList sortList(PtList athletes);
 

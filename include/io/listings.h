@@ -13,11 +13,11 @@
 
 #define LISTINGS_PAGE_SIZE 20
 
-#include "../ADTMap/map.h"
-#include "../ADTMap/mapElem.h"
-#include "../ADTSet/set.h"
-#include "../ADTList/list.h"
-#include "../TopNStats/topnstats.h"
+#include "adt/map.h"
+#include "adt/mapElem.h"
+#include "adt/set.h"
+#include "adt/list.h"
+#include "domain/topnstats.h"
 
 /**
  * @brief Displays all athlete information in the list.

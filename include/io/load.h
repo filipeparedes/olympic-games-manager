@@ -18,12 +18,12 @@
 
 #define FILE_LINE_SIZE 200
 
-#include "../ADTList/list.h"
-#include "../ADTMap/map.h"
-#include "../Medal/medal.h"
-#include "../Input/input.h"
-#include "../Date/date.h"
-#include "../StringWrap/stringWrap.h"
+#include "adt/list.h"
+#include "adt/map.h"
+#include "domain/medal.h"
+#include "io/input.h"
+#include "utils/date.h"
+#include "utils/stringWrap.h"
 
 /**
  * @brief Loads the medal.csv file into a list

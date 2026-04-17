@@ -13,7 +13,7 @@
  * 
  */
 
-#include "map.h"
+#include "adt/map.h"
 #include <stdio.h>
 #include <stdlib.h> 
 #include <string.h> 

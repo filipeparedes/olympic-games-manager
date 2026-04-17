@@ -6,7 +6,7 @@
  * @bug No known bugs.
  */
 
-#include "mapElem.h"
+#include "adt/mapElem.h"
 #include <stdio.h>
 #include <string.h>
 

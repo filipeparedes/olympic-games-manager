@@ -16,6 +16,6 @@
 #include <ctype.h>
 #include <stdbool.h>
 
-#include "medal.h"
+#include "domain/medal.h"
 
 

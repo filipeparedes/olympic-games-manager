@@ -15,16 +15,16 @@
 #include <ctype.h>
 #include <stdbool.h>
 
-#include "logic.h"
-#include "../ADTMap/mapElem.h"
-#include "../ADTMap/map.h"
-#include "../ADTSet/set.h"
-#include "../ADTSet/setElem.h"
-#include "../ADTList/list.h"
-#include "../ADTList/listElem.h"
-#include "../Medal/medal.h"
-#include "../DisciplineStats/disciplinestats.h"
-#include "../TopNStats/topnstats.h"
+#include "core/logic.h"
+#include "adt/mapElem.h"
+#include "adt/map.h"
+#include "adt/set.h"
+#include "adt/setElem.h"
+#include "adt/list.h"
+#include "adt/listElem.h"
+#include "domain/medal.h"
+#include "domain/disciplinestats.h"
+#include "domain/topnstats.h"
 
 PtList filterListByParticipations(PtList athletes, int participations){
 

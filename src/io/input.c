@@ -20,7 +20,7 @@
 #include <ctype.h>
 #include <stdbool.h>
 
-#include "input.h"
+#include "io/input.h"
 
 static bool validIntegerFormat(const char* s);
 static bool validDoubleFormat(const char* s);
