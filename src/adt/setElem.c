@@ -1,6 +1,6 @@
 /**
  * @file setElem.c
- * @author Filipe Paredes (202300257@estudantes.ips.pt)
+ * @author Filipe Paredes (filipeparedes3@gmail.com)
  * @brief Implements operations for setElem.
  * @version 0.3
  * @date 2024-07-22

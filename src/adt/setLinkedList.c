@@ -1,6 +1,6 @@
 /**
  * @file setLinkedList.c
- * @author Filipe Paredes (202300257@estudantes.ips.pt)
+ * @author Filipe Paredes (filipeparedes3@gmail.com)
  * @brief Provides an implementation of the ADT Set with a linked list as the underlying data structure.
  * @version 0.3
  * @date 2024-07-22

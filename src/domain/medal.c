@@ -1,6 +1,6 @@
 /**
  * @file medal.c
- * @author Filipe Paredes (202300257@estudantes.ips.pt)
+ * @author Filipe Paredes (filipeparedes3@gmail.com)
  * @brief Manages and represents medals. Source file containing the implementation of functions.
  * 
  * @version 0.1

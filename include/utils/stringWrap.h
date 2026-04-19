@@ -1,16 +1,10 @@
 /**
  * @file stringWrap.h
- * @author Filipe Paredes (202300257@estudantes.ips.pt)
+ * @author Filipe Paredes (filipeparedes3@gmail.com)
  * @brief Header file for string wrapping operations.
  * 
  * This file contains the declaration of the StringWrap struct and the function
  * for creating a wrapped string.
- * 
- * @version 0.1
- * @date 2024-07-20
- * 
- * @copyright Copyright (c) 2024
- * 
  */
 #pragma once
 #define STRING_MAX_LEN 50

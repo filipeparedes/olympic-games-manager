@@ -1,7 +1,7 @@
 /**
  * @file topnstats.c
  * 
- * @author Filipe Paredes (202300257@estudantes.ips.pt)
+ * @author Filipe Paredes (filipeparedes3@gmail.com)
  * @brief Source file containing the implementation of functions.
  * 
  * @version 0.86

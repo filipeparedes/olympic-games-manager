@@ -1,12 +1,7 @@
 /**
  * @file listings.h
- * @author Filipe Paredes (202300257@estudantes.ips.pt)
+ * @author Filipe Paredes (filipeparedes3@gmail.com)
  * @brief Provides various listing functions for different ADTs.
- * @version 0.4
- * @date 2024-07-23
- * 
- * @copyright Copyright (c) 2024
- * 
  */
 
 #pragma once

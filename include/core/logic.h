@@ -1,15 +1,9 @@
 /**
  * @file logic.h
- * @author Filipe Paredes (202300257@estudantes.ips.pt)
+ * @author Filipe Paredes (filipeparedes3@gmail.com)
  * 
  * @brief Header file containing filtering functions that can be performed on several ADT.
  * like filtering.
- *  
- * @version 0.4
- * @date 2024-07-23
- * 
- * @copyright Copyright (c) 2024
- * 
  */
 
 #pragma once

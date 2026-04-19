@@ -2,7 +2,7 @@
  * @file load.c
  * @brief Implementation of functions to load data from medals, athletes, and hosts CSV files.
  * 
- * @author Filipe Paredes (202300257@estudantes.ips.pt)
+ * @author Filipe Paredes (filipeparedes3@gmail.com)
  * 
  * This source file contains the implementation of functions for reading and parsing data 
  * from medals.csv, athletes.csv, and hosts.csv files, and storing the data into appropriate 

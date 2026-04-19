@@ -1,6 +1,6 @@
 /**
  * @file stringWrap.c
- * @author Filipe Paredes (202300257@estudantes.ips.pt)
+ * @author Filipe Paredes (filipeparedes3@gmail.com)
  * @brief Header file for string wrapping operations.
  * @version 0.1
  * @date 2024-07-20

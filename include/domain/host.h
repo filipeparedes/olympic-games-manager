@@ -1,13 +1,7 @@
 /**
  * @file host.h
- * @author Filipe Paredes (202300257@estudantes.ips.pt)
+ * @author Filipe Paredes (filipeparedes3@gmail.com)
  * @brief Manages and represents host countries. Header file containing type definition for Host and related functions.
- * 
- * @version 0.1
- * @date 2024-07-20
- * 
- * @copyright Copyright (c) 2024
- * 
  */
 
 #pragma once

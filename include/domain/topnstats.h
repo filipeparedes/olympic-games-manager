@@ -1,14 +1,8 @@
 /**
  * @file disciplinestats.h
- * @author Filipe Paredes (202300257@estudantes.ips.pt)
+ * @author Filipe Paredes (filipeparedes3@gmail.com)
  * 
  * @brief Auxiliary data type to store the statistics of  the athletes
- * 
- * @version 0.86
- * @date 2024-07-26
- * 
- * @copyright Copyright (c) 2024
- * 
  */
 
 #pragma once

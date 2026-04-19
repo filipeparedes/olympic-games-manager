@@ -1,6 +1,6 @@
 /**
  * @file main.c
- * @author Filipe Paredes (202300257@estudantes.ips.pt)
+ * @author Filipe Paredes (filipeparedes3@gmail.com)
  * @brief Main file of the program. Contains its entry point. Represents a command prompt.
  * 
  * @version 0.1

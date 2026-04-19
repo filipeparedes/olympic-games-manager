@@ -1,6 +1,6 @@
 /**
  * @file listings.c
- * @author Filipe Paredes (202300257@estudantes.ips.pt)
+ * @author Filipe Paredes (filipeparedes3@gmail.com)
  * @brief Provides an implementation of listings.h
  * 
  * @version 0.4
