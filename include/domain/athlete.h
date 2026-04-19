@@ -13,11 +13,11 @@
 
 typedef struct athlete {
     
-    char athleteID[MAX_ID_LENGTH]; // Identificador único do atleta
-    char athleteName[MAX_NAME_LENGTH]; // Nome do atleta
-    int gamesParticipations; // Número de jogos em que participou
-    char firstGame[MAX_GAME_LENGTH]; // O jogo em que participou pela primeira vez.
-    int athleteBirth;// Ano de nascimento
+    char athleteID[MAX_ID_LENGTH]; 
+    char athleteName[MAX_NAME_LENGTH]; 
+    int gamesParticipations; // Num of Participations
+    char firstGame[MAX_GAME_LENGTH]; // First game of the athlete
+    int athleteBirth;// year of birth
 
 } Athlete;
 

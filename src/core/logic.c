@@ -104,7 +104,7 @@ char** getHostData(PtMap hosts, char* editionName){
         return NULL;
     }
 
-    //Aloca memória para as strings dentro do array
+    //Alocate memory for strings inside the array
     for (int i = 0; i < 4; i++) {
         data[i] = (char*)malloc(50 * sizeof(char));
         if (data[i] == NULL) {
