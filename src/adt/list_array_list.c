@@ -1,33 +1,38 @@
 /**
- * @file listArrayList.c
+ * @file list_array_list.c
  * 
  * @brief Provides an implementation of the ADT List with an array list
  * as the underlying data structure.
  * 
- * @author Bruno Silva (brunomnsilva@gmail.com)
+ * @author Bruno Silva (brunomnsilva@gmail.com) - Original Version
+ * @author Filipe Paredes (filipeparedes3@gmail.com) - Refactor & Maintenance
+ * 
+ * @version 2.0.0
+ * @date 2026-04-20
+ * 
  * @bug No known bugs.
  */
 
 #include "adt/list.h"
-#include "adt/listElem.h"
+#include "adt/list_elem.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
 
 #define INITIAL_CAPACITY 20
 
-typedef struct listImpl {
-	ListElem* elements;
+typedef struct list {
+	list_elem_t* elements;
 	int size; 
 	int capacity;
-} ListImpl;
+} list_t;
 
 
-static bool ensureCapacity(PtList list) {
+static bool ensure_capacity(list_t *list) {
 	if (list->size == list->capacity) {
 		int newCapacity = list->capacity * 2;
-		ListElem* newArray = (ListElem*) realloc( list->elements, 
-								newCapacity * sizeof(ListElem) );
+		list_elem_t* newArray = (list_elem_t*) realloc( list->elements, 
+								newCapacity * sizeof(list_elem_t) );
 		
 		if(newArray == NULL) return false;
 
@@ -38,12 +43,12 @@ static bool ensureCapacity(PtList list) {
 	return true;
 }
 
-PtList listCreate() {
-	PtList list = (PtList)malloc(sizeof(ListImpl));
+list_t *list_create() {
+	list_t *list = (list_t*)malloc(sizeof(list_t));
 	if (list == NULL) return NULL;
 
-	list->elements = (ListElem*)calloc(INITIAL_CAPACITY,
-										sizeof(ListElem));
+	list->elements = (list_elem_t*)calloc(INITIAL_CAPACITY,
+										sizeof(list_elem_t));
 
 	if (list->elements == NULL) {
 		free(list);
@@ -56,19 +61,18 @@ PtList listCreate() {
 	return list;
 }
 
-int listDestroy(PtList *ptList) {
-	PtList list = *ptList;
-	if (list == NULL) return LIST_NULL;
+int list_destroy(list_t **list) {
+	if (list == NULL || *list == NULL) return LIST_NULL;
 
-	free(list->elements);
+	free((*list)->elements);
 	free(list);
 
-	*ptList = NULL;
+	*list = NULL;
 
 	return LIST_OK;
 }
 
-int listAdd(PtList list, int rank, ListElem elem) {
+int list_add(list_t *list, int rank, list_elem_t elem) {
 	if (list == NULL) return LIST_NULL;
 	if (rank < 0 || rank > list->size) return LIST_INVALID_RANK;
 
@@ -86,12 +90,12 @@ int listAdd(PtList list, int rank, ListElem elem) {
 	return LIST_OK;
 }
 
-int listRemove(PtList list, int rank, ListElem *ptElem) {
+int list_remove(list_t *list, int rank, list_elem_t *elem) {
 	if (list == NULL) return LIST_NULL;
 	if (list->size == 0) return LIST_EMPTY;
 	if (rank < 0 || rank > list->size - 1) return LIST_INVALID_RANK;
 
-	*ptElem = list->elements[rank];
+	*elem = list->elements[rank];
 
 	/* close the gap at this rank */
 	for(int i = rank; i< list->size - 1; i++) {
@@ -103,48 +107,48 @@ int listRemove(PtList list, int rank, ListElem *ptElem) {
 	return LIST_OK;
 }
 
-int listGet(PtList list, int rank, ListElem *ptElem) {
+int list_get(list_t *list, int rank, list_elem_t *elem) {
 	if (list == NULL) return LIST_NULL;
 	if (rank < 0 || rank > list->size - 1) return LIST_INVALID_RANK;
 
-	*ptElem = list->elements[rank];
+	*elem = list->elements[rank];
 
 	return LIST_OK;
 }
 
-int listSet(PtList list, int rank, ListElem elem, ListElem *ptOldElem) {
+int list_set(list_t *list, int rank, list_elem_t elem, list_elem_t *old_elem) {
 	if (list == NULL) return LIST_NULL;
 	if (rank < 0 || rank > list->size - 1) return LIST_INVALID_RANK;
 
-	*ptOldElem = list->elements[rank];
+	*old_elem = list->elements[rank];
 
 	list->elements[rank] = elem;
 
 	return LIST_OK;
 }
 
-int listSize(PtList list, int *ptSize) {
+int list_size(list_t *list, int *size) {
 	if (list == NULL) return LIST_NULL;
 
-	*ptSize = list->size;
+	*size = list->size;
 
 	return LIST_OK;
 }
 
-bool listIsEmpty(PtList list) {
+bool list_is_empty(list_t *list) {
 	if (list == NULL) return 1;
 
 	return (list->size == 0);
 }
 
-int listClear(PtList list) {
+int list_clear(list_t *list) {
 	if (list == NULL) return LIST_NULL;
 
 	list->size = 0;
 
 	return LIST_OK;
 }
-void listPrint(PtList list) {
+void list_print(list_t *list) {
 	if (list == NULL) {
 		printf("(List NULL)\n");
 	}
@@ -155,7 +159,7 @@ void listPrint(PtList list) {
 		printf("List contents (by rank): \n");
 		for(int rank = 0; rank < list->size; rank++) {
 			printf("Rank %d: \n", rank);
-			listElemPrint(list->elements[rank]);
+			list_elem_print(list->elements[rank]);
 			printf("\n");
 		}
 	}

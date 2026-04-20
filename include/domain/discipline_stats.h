@@ -23,6 +23,6 @@ typedef struct discipline_stats {
          
     char discipline_name[MAX_DISCIPLINE_SIZE];
     char top_medals_country[MAX_COUNTRY_SIZE];   
-    float women_tatio;                      
+    float women_ratio;                      
     
 } discipline_stats_t;

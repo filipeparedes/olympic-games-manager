@@ -3,5 +3,6 @@
 
 # Ignore the default executable named "prog"
 prog
+*.o
 
 
