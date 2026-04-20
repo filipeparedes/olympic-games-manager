@@ -6,7 +6,7 @@
  *
  * @author Filipe Paredes (filipeparedes3@gmail.com)
  *
- * @version 1.0.0
+ * @version 1.0.1
  * @date 2026-04-20
  *
  * @copyright Copyright (c) 2026
@@ -20,6 +20,8 @@
 #include "domain/medal.h"
 #include "domain/top_n_stats.h"
 #include "io/load.h"
+#include "core/logic.h"
+#include "core/app.h"
 #include "io/listings.h"
 
 

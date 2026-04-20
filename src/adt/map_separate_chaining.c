@@ -10,7 +10,7 @@
  * @author Bruno Silva (brunomnsilva@gmail.com) - Original Version 
  * @author Filipe Paredes (filipeparedes3@gmail.com) - Refactor & Maintenance
  * 
- * @version 2.0.0
+ * @version 2.0.1
  * @date 2026-04-20
  * 
  * @copyright Copyright (c) 2024 Bruno silva
@@ -32,6 +32,9 @@
 /* Hash table size and hash function multiplier */
 #define HASHTABLE_SIZE  53
 #define MULTIPLIER  7
+
+//Forward declaration
+typedef struct entry entry_t;
 
 /* An entry is a node (of a singly linked list) */
 typedef struct entry {

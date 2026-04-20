@@ -10,7 +10,7 @@
  * @author Bruno Silva (bruno.silva@estsetubal.ips.pt) - Original Version
  * @author Filipe Paredes (filipeparedes3@gmail.com) - Refactor & Maintenance
  * 
- * @version 2.0.0
+ * @version 2.0.1
  * @date 2026-04-20
  * 
  * @copyright Copyright (c) 2021 Bruno Silva
@@ -27,27 +27,27 @@
 
 #include "io/input.h"
 
-static bool validIntegerFormat(const char* s);
-static bool validDoubleFormat(const char* s);
-static void removeNewline(char *s);
+static bool valid_integer_format(const char* s);
+static bool valid_double_format(const char* s);
+static void remove_newline(char *s);
 
-bool readInteger(int *ptVal) {
+bool read_integer(int *ptVal) {
 	char str[20];
 	fgets(str, sizeof(str), stdin);
-	removeNewline(str);
+	remove_newline(str);
 
-	if(!validIntegerFormat(str)) return false;
+	if(!valid_integer_format(str)) return false;
 
 	*ptVal = atoi(str);
 	return true;
 }
 
-bool readDouble(double *ptVal) {
+bool read_double(double *ptVal) {
 	char str[20];
 	fgets(str, sizeof(str), stdin);
-	removeNewline(str);
+	remove_newline(str);
 
-	if(!validDoubleFormat(str)) return false;
+	if(!valid_double_format(str)) return false;
 
 	*ptVal = atof(str);
 	return true;
@@ -56,7 +56,7 @@ bool readDouble(double *ptVal) {
 bool readChar(char *ptVal) {
 	char line[20];
 	fgets(line, sizeof(line), stdin);
-	removeNewline(line);
+	remove_newline(line);
 
     int len = strlen(line);
 	/* we only take the fist character */
@@ -67,12 +67,12 @@ bool readChar(char *ptVal) {
 	return false; /* no characters were read */
 }
 
-void readString(char *charArr, unsigned int maxChars) {
-	fgets(charArr, maxChars, stdin);
-	removeNewline(charArr); /* modifies in-place*/
+void read_string(char *charArr, size_t max_size) {
+	fgets(charArr, max_size, stdin);
+	remove_newline(charArr); /* modifies in-place*/
 }
 
-char** splitString(char *string, int nTokens, const char *delim) {
+char** split_string(char *string, int nTokens, const char *delim) {
     char **tokens = (char**) malloc(sizeof(char*) * nTokens);
     int index = 0;
     int len = strlen(string);
@@ -101,7 +101,7 @@ char** splitString(char *string, int nTokens, const char *delim) {
     return tokens;
 }
 
-static bool validIntegerFormat(const char* s) {
+static bool valid_integer_format(const char* s) {
 	const char *start = s;
 	for(const char *c = s; *c != '\0'; c++) {
 		if(c == start && *c == '-') continue;
@@ -110,7 +110,7 @@ static bool validIntegerFormat(const char* s) {
 	return true;
 }
 
-static bool validDoubleFormat(const char* s) {
+static bool valid_double_format(const char* s) {
 	int dotCount = 0;
 	const char *start = s;
 	for(const char *c = s; *c != '\0'; c++) {
@@ -125,7 +125,7 @@ static bool validDoubleFormat(const char* s) {
 	return true;
 }
 
-static void removeNewline(char *s) {
+static void remove_newline(char *s) {
 	int len = strlen(s);
 	if (len > 0 && s[len - 1] == '\n') {
 		s[len - 1] = '\0';

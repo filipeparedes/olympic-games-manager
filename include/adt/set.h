@@ -5,7 +5,7 @@
  * 
  * @author Filipe Paredes (filipeparedes3@gmail.com)
  * 
- * @version 2.0.0
+ * @version 2.0.1
  * @date 2026-04-20
  * 
  * @bug No known bugs.
@@ -143,4 +143,4 @@ void set_print(set_t *set);
  * @returns SET_OK if success
  * @returns SET_NULL if set is NULL
  */
-int set_destroy(set_t *set);
+int set_destroy(set_t **set);

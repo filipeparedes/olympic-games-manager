@@ -5,7 +5,7 @@
  * 
  * @author Filipe Paredes (filipeparedes3@gmail.com)
  * 
- * @version 2.0.0
+ * @version 2.0.1
  * @date 2026-04-20
  * 
  * @bug No known bugs.
@@ -44,4 +44,4 @@ app_state_t *create_app_state();
  * 
  * @param app an address of the pointer to the app_state_t to delete
  */
-void destroy_app_state (app_state_t **app);
+void destroy_app_state(app_state_t **app);

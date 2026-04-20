@@ -9,7 +9,7 @@
  * 
  * @author Filipe Paredes (filipeparedes3@gmail.com)
  * 
- * @version 2.0.0
+ * @version 2.0.1
  * @date 2026-04-20
  * 
  * @bug No known bugs.
@@ -31,4 +31,4 @@ typedef discipline_stats_t set_elem_t;
  * 
  * @param elem [in] element to print
  */
-void setElemPrint(set_elem_t elem);
+void set_elem_print(set_elem_t elem);

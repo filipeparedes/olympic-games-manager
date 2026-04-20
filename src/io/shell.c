@@ -5,7 +5,7 @@
  * 
  * @author Filipe Paredes (filipeparedes3@gmail.com)
  * 
- * @version 1.0.0
+ * @version 1.0.1
  * @date 2026-04-20
  * 
  * @copyright Copyright (c) 2026
@@ -17,7 +17,7 @@
 #include "core/app.h"
 #include "core/command.h"
 #include "io/input.h"
-#include "shell.h"
+#include "io/shell.h"
 
  void run_shell(app_state_t *app) {
     //input

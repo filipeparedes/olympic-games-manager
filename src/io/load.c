@@ -9,7 +9,7 @@
  * 
  * @author Filipe Paredes (filipeparedes3@gmail.com)
  * 
- * @version 2.0.0
+ * @version 2.0.1
  * @date 2026-04-20
  * 
  * @copyright Copyright (c) 2026
@@ -92,7 +92,7 @@ int import_athletes(list_t *list, int *size){
         free(split_str);
     }
 
-    listSize(list, size);
+    list_size(list, size);
 
     fclose(file);
     return LOAD_OK;
@@ -122,18 +122,18 @@ int import_hosts(map_t *map, int* size){
         host_t host;
         string_wrap_t str_wrap;
         if(split_str[0] != NULL) str_wrap = string_wrap_create(split_str[0]);
-        if(split_str[1] != NULL) stringToDate(split_str[1], &host.game_end_date);
-        if(split_str[2] != NULL) stringToDate(split_str[2], &host.game_start_date);
+        if(split_str[1] != NULL) string_to_date(split_str[1], &host.game_end_date);
+        if(split_str[2] != NULL) string_to_date(split_str[2], &host.game_start_date);
         if(split_str[3] != NULL) strcpy(host.location, split_str[3]);
         if(split_str[4] != NULL) strcpy(host.game_name, split_str[4]);
         if(split_str[5] != NULL) strcpy(host.season, split_str[5]);
         if(split_str[6] != NULL) host.game_year = atoi(split_str[6]);
 
-        mapPut(map, str_wrap, host);
+        map_put(map, str_wrap, host);
 
         free(split_str);
     }
-    mapSize(map, size);
+    map_size(map, size);
 
     fclose(file);
     return LOAD_OK;

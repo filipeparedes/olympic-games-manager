@@ -5,7 +5,7 @@
  * 
  * @author Filipe Paredes (filipeparedes3@gmail.com)
  * 
- * @version 2.0.0
+ * @version 2.0.1
  * @date 20-04-2026
  * 
  * @copyright Copyright (c) 2026
@@ -46,7 +46,7 @@ app_state_t *create_app_state() {
     return app;
 }
 
-void delete_app_state(app_state_t **app) {
+void destroy_app_state(app_state_t **app) {
     if (app == NULL || *app == NULL) return;
 
     //free internal structures

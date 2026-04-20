@@ -7,7 +7,7 @@
  * @author Bruno Silva (brunomnsilva@gmail.com) - Original Version
  * @author Filipe Paredes (filipeparedes3@gmail.com) - Refactor & Maintenance
  * 
- * @version 2.0.0
+ * @version 2.0.1
  * @date 2026-04-20
  * 
  * @bug No known bugs.
@@ -76,7 +76,7 @@ int list_add(list_t *list, int rank, list_elem_t elem) {
 	if (list == NULL) return LIST_NULL;
 	if (rank < 0 || rank > list->size) return LIST_INVALID_RANK;
 
-	if(!ensureCapacity(list)) return LIST_NO_MEMORY;
+	if(!ensure_capacity(list)) return LIST_NO_MEMORY;
 
 	/* make room for new element at index 'rank' */
 	for(int i = list->size; i > rank; i--) {
