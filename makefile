@@ -3,41 +3,42 @@ CC = gcc
 CFLAGS = -Wall -Wextra -Iinclude
 TARGET = prog
 
-# --- Automatic file discovery ---
-# Find all .c files recursively within the src directory
-SRCS = $(shell find src -name "*.c")
+# Directories
+SRC_DIR = src
+BUILD_DIR = build
 
-# Convert the list of .c files into a list of .o (object files)
-OBJS = $(SRCS:.c=.o)
+# --- Automatic file discovery ---
+# Find all .c files recursively
+SRCS = $(shell find $(SRC_DIR) -name "*.c")
+
+# Convert src/path/file.c to build/path/file.o
+OBJS = $(patsubst $(SRC_DIR)/%.c, $(BUILD_DIR)/%.o, $(SRCS))
 
 # --- Compilation rules ---
 
-# Default rule: builds the final executable
 all: $(TARGET)
 
-# Linking step: combines object files into the final binary
+# Linking
 $(TARGET): $(OBJS)
 	$(CC) $(CFLAGS) -o $(TARGET) $(OBJS)
 
-# Pattern rule: compiles each .c file into a .o file
-%.o: %.c
+# Pattern rule: compiles each .c into the build directory
+# The 'mkdir' ensures the subdirectories exist before compiling
+$(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
+	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 # --- Utility rules ---
 
-# Debug mode: adds the -g flag for GDB/LLDB, cleans, and rebuilds everything
 debug: CFLAGS += -g
 debug: clean all
 
-# Cleanup: removes the executable and deletes all .o files found in src
+# Cleanup
 clean:
 	rm -f $(TARGET)
-	find src -name "*.o" -delete
+	rm -rf $(BUILD_DIR)
 
-# Prevent conflicts with files named 'all', 'debug', or 'clean'
-.PHONY: all debug clean
+.PHONY: all debug clean run
 
-# --- Execution rule ---
-# Compiles (if necessary) and runs the program
 run: all
 	./$(TARGET)
