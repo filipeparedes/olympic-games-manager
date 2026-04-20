@@ -1,14 +1,14 @@
 /**
- * @file disciplinestats.c
+ * @file top_n_stats.c
  * 
- * @author Filipe Paredes (filipeparedes3@gmail.com)
  * @brief Source file containing the implementation of functions.
  * 
- * @version 0.7
- * @date 2024-07-24
+ * @author Filipe Paredes (filipeparedes3@gmail.com)
+ * 
+ * @version 2.0.0
+ * @date 2026-04-20
  * 
  * @copyright Copyright (c) 2024
- * 
  */
 
 #include <stdio.h>
@@ -17,4 +17,4 @@
 #include <ctype.h>
 #include <stdbool.h>
 
-#include "domain/disciplinestats.h"
+#include "domain/top_n_stats.h"

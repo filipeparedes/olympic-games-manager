@@ -123,7 +123,7 @@ int list_set(list_t *list, int rank, list_elem_t elem, list_elem_t *old_elem);
  * @return LIST_OK if successful and value in 'ptSize', or
  * @return LIST_NULL if 'list' is NULL 
  */
-int list_size(list_t list, int *size);
+int list_size(list_t *list, int *size);
 
 /**
  * @brief Checks whether a list is empty.

@@ -1,12 +1,16 @@
 /**
  * @file app.h
- * @author Filipe Paredes (filipeparedes3@gmail.com)
+ *
  * @brief Contains implementation for app.h
- * @version 1
+ * 
+ * @author Filipe Paredes (filipeparedes3@gmail.com)
+ * 
+ * @version 2.0.0
  * @date 20-04-2026
  * 
  * @copyright Copyright (c) 2026
  * 
+ * @bug No known bugs.
  */
 
 #include <stdio.h>
@@ -16,41 +20,39 @@
 #include <stdbool.h>
 
 #include "core/app.h"
-#include "adt/mapElem.h"
+#include "adt/map_elem.h"
 #include "adt/map.h"
 #include "adt/set.h"
-#include "adt/setElem.h"
+#include "adt/set_elem.h"
 #include "adt/list.h"
-#include "adt/listElem.h"
+#include "adt/list_elem.h"
 #include "domain/medal.h"
-#include "domain/disciplinestats.h"
-#include "domain/topnstats.h"
+#include "domain/discipline_stats.h"
+#include "domain/top_n_stats.h"
 
-PtAppState createAppState() {
-    PtAppState app = (PtAppState)malloc(sizeof(AppState));
+app_state_t *create_app_state() {
+    app_state_t *app = (app_state_t*)malloc(sizeof(app_state_t));
     if (app == NULL) return NULL;
 
     //initialize structures
-    app->athletesList = listCreate();
-    app->hostsMap = mapCreate();
-    app->medalsArray = NULL; //allocated during load
+    app->athletes_list = list_create();
+    app->hosts_map = map_create();
+    app->medals_array = NULL; //allocated during load
 
     //initialize counters
-    app->athletesCount = 0;
-    app->hostsCount = 0;
-    app->medalsCount = 0;
-    app->dataLoaded = false;
+    app->medals_count = 0;
+    app->data_loaded = false;
 
     return app;
 }
 
-void deleteAppState(PtAppState* app) {
+void delete_app_state(app_state_t **app) {
     if (app == NULL || *app == NULL) return;
 
     //free internal structures
-    if ((*app)->athletesList != NULL) listDestroy(&(*app)->athletesList);
-    if ((*app)->hostsMap != NULL) mapDestroy(&(*app)->hostsMap);
-    if ((*app)->medalsArray != NULL) free((*app)->medalsArray);
+    if ((*app)->athletes_list != NULL) list_destroy(&(*app)->athletes_list);
+    if ((*app)->hosts_map != NULL) map_destroy(&(*app)->hosts_map);
+    if ((*app)->medals_array != NULL) free((*app)->medals_array);
 
     free(*app);
     *app = NULL;

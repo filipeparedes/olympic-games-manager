@@ -1,13 +1,14 @@
 /**
  * @file athlete.c
- * @author Filipe Paredes (filipeparedes3@gmail.com)
+ * 
  * @brief Manages and represents athletes. Source file containing the implementation of functions.
  * 
- * @version 0.1
- * @date 2024-07-20
+ * @author Filipe Paredes (filipeparedes3@gmail.com)
  * 
- * @copyright Copyright (c) 2024
+ * @version 2.0.0
+ * @date 2026-04-20
  * 
+ * @copyright Copyright (c) 2026
  */
 
 #include <stdio.h>

@@ -1,17 +1,22 @@
 /**
  * @file input.c
- * @author Bruno Silva (bruno.silva@estsetubal.ips.pt)
+ *
  * @brief Provides an implementation of input.h.
  * 
  * Relies in always reading text and converting to the appropriate
  * data type. Some straighforward validations are implemented.
  * Does not allow trailing spaces in the formats.
  * 
- * @version 1
- * @date 2021-02-22
+ * @author Bruno Silva (bruno.silva@estsetubal.ips.pt) - Original Version
+ * @author Filipe Paredes (filipeparedes3@gmail.com) - Refactor & Maintenance
  * 
- * @copyright Copyright (c) 2021
+ * @version 2.0.0
+ * @date 2026-04-20
  * 
+ * @copyright Copyright (c) 2021 Bruno Silva
+ * Modifications and Refactor (c) 2026 Filipe Paredes
+ * 
+ * @bug No known bugs.
  */
 
 #include <stdio.h>

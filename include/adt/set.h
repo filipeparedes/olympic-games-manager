@@ -35,7 +35,7 @@ typedef struct set set_t;
  * @return set_t pointer to allocated data structure
  * @return NULL if unsufficient memory for allocation
  */
-set_t set_create();
+set_t *set_create();
 
 /**
  * @brief Adds an element to a set if it isn't already present
@@ -84,7 +84,7 @@ bool set_contains(set_t *set, set_elem_t elem);
  * @return SET_OK if successful
  * @return SET_NULL if set is NULL
  */
-int set_size(set_t set, int *size);
+int set_size(set_t *set, int *size);
 
 /**
  * @brief Checks if a set is a subset of another set

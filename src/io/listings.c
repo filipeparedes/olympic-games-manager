@@ -1,13 +1,16 @@
 /**
  * @file listings.c
- * @author Filipe Paredes (filipeparedes3@gmail.com)
+ * 
  * @brief Provides an implementation of listings.h
  * 
- * @version 0.4
- * @date 2024-07-23
+ * @author Filipe Paredes (filipeparedes3@gmail.com)
  * 
- * @copyright Copyright (c) 2024
+ * @version 2.0.0
+ * @date 2026-04-20
  * 
+ * @copyright Copyright (c) 2026
+ * 
+ * @bug No known bugs.
  */
 
 #include <stdio.h>
@@ -18,26 +21,26 @@
 
 #include "io/listings.h"
 #include "adt/map.h"
-#include "adt/mapElem.h"
+#include "adt/map_elem.h"
 #include "adt/list.h"
 #include "adt/set.h"
 #include "domain/athlete.h"
-#include "domain/topnstats.h"
+#include "domain/top_n_stats.h"
 
-PtList sortList(PtList athletes);
+list_t *sort_list(list_t *athletes);
 
-void paginate(PtList athletes) {
+void paginate(list_t *athletes) {
     int page = 0;
     int size = 0;
     int command;
-    listSize(athletes, &size);
-    PtList sortedList = sortList(athletes);
+    list_size(athletes, &size);
+    list_t *sorted_list = sort_list(athletes);
 
     printf("%d ATHLETES FOUND \n", size);
 
     if (size != 0) {
         bool whileOn = true;
-        Athlete athlete;
+        athlete_t athlete;
 
         while (whileOn)
         {
@@ -53,8 +56,8 @@ void paginate(PtList athletes) {
                     printf("\n");
                     break;
                 } else{
-                    listGet(sortedList, i, &athlete);
-                    listElemPrint(athlete);
+                    list_get(sorted_list, i, &athlete);
+                    list_elem_print(athlete);
                 }
                 
             }
@@ -63,7 +66,7 @@ void paginate(PtList athletes) {
                 printf("1. Next %d\n", LISTINGS_PAGE_SIZE);
             printf("2. Return\n");
             
-            readInteger(&command);
+            read_integer(&command);
 
             if (command == 2)
                 whileOn =false;
@@ -75,13 +78,13 @@ void paginate(PtList athletes) {
     
     }
 
-    free(sortedList);
+    free(sorted_list);
 }
 
-void paginateSet(PtSet statistics){
+void paginate_set(set_t *statistics){
 
     int size;
-    setSize(statistics, &size);
+    set_size(statistics, &size);
     printf("%d DISCIPLINES FOUND\n\n", size);
 
     printf("%30s", "DISCIPLINE");
@@ -89,95 +92,95 @@ void paginateSet(PtSet statistics){
     printf("%15s", "PARTICIPATIONS");
     printf("===========================================================================================================================\n");
 
-    setPrint(statistics);
+    set_print(statistics);
 }
 
-void printHostDetails(char** hostData) {
-    if (hostData == NULL) return;
+void print_host_details(char **host_data) {
+    if (host_data == NULL) return;
 
-    printf("\nHosting city: %s\n", hostData[0]);
-    printf("Year: %s\n", hostData[1]);
-    printf("Hosting country: %s\n", hostData[2]);
-    printf("Duration of the event (days): %s\n\n", hostData[3]);
+    printf("\nHosting city: %s\n", host_data[0]);
+    printf("Year: %s\n", host_data[1]);
+    printf("Hosting country: %s\n", host_data[2]);
+    printf("Duration of the event (days): %s\n\n", host_data[3]);
 }
 
-void printAthleteInfo(char** medalsStatistics, int medalsStatsSize, char* country, char* athleteID, int participations, int birthYear) {
+void print_athlete_info(char** medals_statistics, int medals_stats_size, char *country, char *athlete_id, int participations, int birth_year) {
     printf("\n=============== ATHLETE INFO ================\n");
-    printf("AthleteID: %s\n", athleteID);
-    printf("Birth Year: %d\n", birthYear);
+    printf("AthleteID: %s\n", athlete_id);
+    printf("Birth Year: %d\n", birth_year);
     printf("Country: %s\n", country);
     printf("Number of Participations: %d\n\n", participations);
     printf("=================== MEDALS ===================\n");
 
-    for (int i = 0; i<medalsStatsSize; i++) {
-        printf("%s\n", medalsStatistics[i]);
+    for (int i = 0; i<medals_stats_size; i++) {
+        printf("%s\n", medals_statistics[i]);
     }
 }
 
-void printTopN(PtTopN topNList, int topNSize, int n) {
+void print_top_n(top_n_stats_t *top_n_list, int top_n_size, int n) {
         printf("\n\n%-40s | %-12s | %-30s | %-28s\n", "Country", "Total medals", "Average medals by game edition", "Average medals by game day");
         printf("--------------------------------------------------------------------------------------------------------------------------\n");
 
-        PtTopN sortedTopN = sortTopN(topNList, topNSize);
+        top_n_stats_t *sorted_top_n = sort_top_n(top_n_list, top_n_size);
 
-        if (n>topNSize) {
-            for (int i = 0; i<topNSize; i++) {
-             printf("%-40s | %-12d | %-30.2f | %-28.2f\n", sortedTopN[i].country, sortedTopN[i].totalMedals, sortedTopN[i].avgMedalsEdition, sortedTopN[i].avgMedalsGameDays);
+        if (n>top_n_size) {
+            for (int i = 0; i<top_n_size; i++) {
+             printf("%-40s | %-12d | %-30.2f | %-28.2f\n", sorted_top_n[i].country, sorted_top_n[i].total_medals, sorted_top_n[i].avg_medals_edition, sorted_top_n[i].avg_medals_game_days);
             }
 
         } else {
             for (int i = 0; i<n; i++) {
-             printf("%-40s | %-12d | %-30.2f | %-28.2f\n", sortedTopN[i].country, sortedTopN[i].totalMedals, sortedTopN[i].avgMedalsEdition, sortedTopN[i].avgMedalsGameDays);
+             printf("%-40s | %-12d | %-30.2f | %-28.2f\n", sorted_top_n[i].country, sorted_top_n[i].total_medals, sorted_top_n[i].avg_medals_edition, sorted_top_n[i].avg_medals_game_days);
             }
-            printf("\n\nCould not find more than %d results.\n", topNSize);
+            printf("\n\nCould not find more than %d results.\n", top_n_size);
         }
 }
 
-PtTopN sortTopN(PtTopN topNList, int topNSize){
-    PtTopN sortedArray = topNList;
+top_n_stats_t *sort_top_n(top_n_stats_t *top_n_list, int top_n_size){
+    top_n_stats_t *sorted_array = top_n_list;
 
-    for (int i = 0; i<topNSize; i++) {
-        for (int j = 0; j<topNSize; j++) {
-            if (sortedArray[j].totalMedals < sortedArray[j+1].totalMedals) {
-                TopNStats temp;
-                temp = sortedArray[j];
-                sortedArray[j] = sortedArray[j+1];
-                sortedArray[j+1] = temp; 
-            } else if (sortedArray[j].totalMedals == sortedArray[j+1].totalMedals) {
-                if (strcmp(sortedArray[j].country, sortedArray[j+1].country) > 0) {
-                    TopNStats temp;
-                    temp = sortedArray[j];
-                    sortedArray[j] = sortedArray[j+1];
-                    sortedArray[j+1] = temp;
+    for (int i = 0; i<top_n_size; i++) {
+        for (int j = 0; j<top_n_size; j++) {
+            if (sorted_array[j].total_medals < sorted_array[j+1].total_medals) {
+                top_n_stats_t temp;
+                temp = sorted_array[j];
+                sorted_array[j] = sorted_array[j+1];
+                sorted_array[j+1] = temp; 
+            } else if (sorted_array[j].total_medals == sorted_array[j+1].total_medals) {
+                if (strcmp(sorted_array[j].country, sorted_array[j+1].country) > 0) {
+                    top_n_stats_t temp;
+                    temp = sorted_array[j];
+                    sorted_array[j] = sorted_array[j+1];
+                    sorted_array[j+1] = temp;
                 }
 
             }
         }
     }
 
-    return sortedArray;
+    return sorted_array;
 }
 
-PtList sortList(PtList athletes) {
-    int listSizeVar;
-    listSize(athletes, &listSizeVar);
-    PtList sortedList = athletes;
+list_t *sort_list(list_t *athletes) {
+    int list_size_var;
+    list_size(athletes, &list_size_var);
+    list_t *sorted_list = athletes;
 
-    for (int i = 0; i < listSizeVar-1; i++) {
-        for (int j = 0; j < listSizeVar-i-1; j++) { 
+    for (int i = 0; i < list_size_var-1; i++) {
+        for (int j = 0; j < list_size_var-i-1; j++) { 
 
-            Athlete elem, elem2;
-            listGet(sortedList, j, &elem);
-            listGet(sortedList, j+1, &elem2);
+            athlete_t elem, elem2;
+            list_get(sorted_list, j, &elem);
+            list_get(sorted_list, j+1, &elem2);
 
-            if (strcmp(elem.athleteName, elem2.athleteName) > 0) {
-                listSet(sortedList, j+1, elem, &elem2);
-                listSet(sortedList, j, elem2, &elem);
+            if (strcmp(elem.athlete_name, elem2.athlete_name) > 0) {
+                list_set(sorted_list, j+1, elem, &elem2);
+                list_set(sorted_list, j, elem2, &elem);
             }
         }
     }
     
-   return sortedList;
+   return sorted_list;
 }
 
 
