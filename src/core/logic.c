@@ -5,8 +5,8 @@
  * 
  * @author Filipe Paredes (filipeparedes3@gmail.com)
  * 
- * @version 2.0.0
- * @date 2026-04-20
+ * @version 2.1.1
+ * @date 2026-04-21
  * 
  * @copyright Copyright (c) 2026
  * 
@@ -473,4 +473,61 @@ top_n_stats_t *get_top_n_countries(medal_t *medals, int medals_size, map_t *host
     *size = top_n_count;
 
     return top_n_list;
+}
+
+void get_medals_won(medal_t *medals, int medals_size, map_t *hosts, char *country, int start_year, char *season) {
+    int hosts_size;
+    map_size(hosts, &hosts_size);
+ 
+    if (medals_size == 0) { printf("Medals array is empty.\n"); return; }
+    if (hosts_size == 0)  { printf("Hosts map is empty.\n");   return; }
+ 
+    map_key_t *keys = map_keys(hosts);
+ 
+    int gold = 0, silver = 0, bronze = 0;
+    int found = 0;
+ 
+    printf("\nMedals won by %s from %d (%s):\n", country, start_year, season);
+    printf("%-40s %-15s %-10s\n", "Edition", "Discipline", "Medal");
+    printf("%-40s %-15s %-10s\n", "-------", "----------", "-----");
+ 
+    for (int i = 0; i < medals_size; i++) {
+        if (strcmp(medals[i].country, country) != 0) continue;
+ 
+        // Resolve host to check year and season
+        host_t host;
+        bool host_found = false;
+ 
+        for (int j = 0; j < hosts_size; j++) {
+            if (strcmp(keys[j].text, medals[i].game) == 0) {
+                if (map_get(hosts, keys[j], &host) == MAP_OK) {
+                    host_found = true;
+                    break;
+                }
+            }
+        }
+ 
+        if (!host_found) continue;
+        if (strcmp(host.season, season) != 0) continue;
+        if (host.game_start_date.year < start_year) continue;
+ 
+        char medal_str[10];
+        switch (medals[i].medal_type) {
+            case 'G': strcpy(medal_str, "GOLD");   gold++;   break;
+            case 'S': strcpy(medal_str, "SILVER"); silver++; break;
+            case 'B': strcpy(medal_str, "BRONZE"); bronze++; break;
+            default:  strcpy(medal_str, "?");                break;
+        }
+ 
+        printf("%-40s %-15s %-10s\n", host.game_name, medals[i].discipline, medal_str);
+        found++;
+    }
+ 
+    if (found == 0) {
+        printf("No medals found.\n");
+        return;
+    }
+ 
+    printf("\nTotal: %d medal(s) — Gold: %d | Silver: %d | Bronze: %d\n",
+           gold + silver + bronze, gold, silver, bronze);
 }
