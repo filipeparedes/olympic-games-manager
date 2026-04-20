@@ -1,7 +1,15 @@
 /**
  * @file date.h
+ * 
+ * @brief Manages and represents date. 
+ * Header file containing type definition for Date and related functions.
+ * 
  * @author Filipe Paredes (filipeparedes3@gmail.com)
- * @brief Manages and represents date. Header file containing type definition for Date and related functions.
+ * 
+ * @version 2.0.0
+ * @date 2026-04-20
+ * 
+ * @bug No known bugs.
  */
 
 #pragma once
@@ -30,7 +38,7 @@ typedef struct date
     int hour;    
     int minute;  
     int second;  
-} Date;
+} date_t;
 
 /**
  * @brief Converts a string to a Date structure.
@@ -46,4 +54,4 @@ typedef struct date
  * @returns STRING_NULL if the string is null
  * @returns STRING_INVALID if the string is not in the correct format
  */
-int stringToDate(char* str, Date* date);
+int string_to_date(char *str, date_t *date);

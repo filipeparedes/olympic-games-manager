@@ -1,7 +1,15 @@
 /**
  * @file host.h
+ * 
+ * @brief Manages and represents host countries. 
+ * Header file containing type definition for Host and related functions.
+ * 
  * @author Filipe Paredes (filipeparedes3@gmail.com)
- * @brief Manages and represents host countries. Header file containing type definition for Host and related functions.
+ * 
+ * @version 2.0.0
+ * @date 2026-04-20
+ * 
+ * @bug No known bugs.
  */
 
 #pragma once
@@ -17,11 +25,11 @@
  */
 typedef struct host {
          
-    Date gameEndDate;
-    Date gameStartDate;
+    date_t game_end_date;
+    date_t game_start_date;
     char location[MAX_GAME_LOCATION_LENGTH];
-    char gameName[MAX_GAME_NAME_LENGTH];    
+    char game_name[MAX_GAME_NAME_LENGTH];    
     char season[MAX_GAME_SEASON_LENGTH];    
-    int gameYear;                         
+    int game_year;                         
     
-} Host;
+} host_t;

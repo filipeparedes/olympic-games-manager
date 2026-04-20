@@ -1,8 +1,15 @@
 /**
  * @file athlete.h
- * @author Filipe Paredes (filipeparedes3@gmail.com)
+ * 
  * @brief Manages and represents athletes. 
  * Header file containing type definition for Athlete and related functions.
+ * 
+ * @author Filipe Paredes (filipeparedes3@gmail.com)
+ * 
+ * @version 2.0.0
+ * @date 2026-04-20
+ * 
+ * @bug No known bugs.
  */
 
 #pragma once
@@ -13,11 +20,11 @@
 
 typedef struct athlete {
     
-    char athleteID[MAX_ID_LENGTH]; 
-    char athleteName[MAX_NAME_LENGTH]; 
-    int gamesParticipations; // Num of Participations
-    char firstGame[MAX_GAME_LENGTH]; // First game of the athlete
-    int athleteBirth;// year of birth
+    char athlete_id[MAX_ID_LENGTH]; 
+    char athlete_name[MAX_NAME_LENGTH]; 
+    int games_participations; // Num of Participations
+    char first_game[MAX_GAME_LENGTH]; // First game of the athlete
+    int athlete_birth;// year of birth
 
-} Athlete;
+} athlete_t;
 

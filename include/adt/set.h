@@ -1,11 +1,19 @@
 /**
  * @file set.h
+ * 
+ * @brief Definition of the ADT Set in C. Defines the type set_t and associated operations.
+ * 
  * @author Filipe Paredes (filipeparedes3@gmail.com)
- * @brief Definition of the ADT Set in C. Defines the type PtSet and associated operations.
+ * 
+ * @version 2.0.0
+ * @date 2026-04-20
+ * 
+ * @bug No known bugs.
  */
 
 #pragma once
 
+// Error codes
 #define SET_OK				0
 #define SET_NULL			1
 #define SET_NO_MEMORY		2
@@ -14,23 +22,20 @@
 #define SET_DUPLICATE       5
 #define SET_MISSING_ELEM    6
 
-#include "adt/setElem.h"
+#include "adt/set_elem.h"
 #include <string.h>
 #include <stdbool.h>
 
-/** Forward declaration of the data structure. */
-struct setImpl;
 
-/** Definition of pointer to the  data stucture. */
-typedef struct setImpl *PtSet;
+typedef struct set set_t;
 
 /**
  * @brief Creates a new empty set.
  * 
- * @return PtSet pointer to allocated data structure
+ * @return set_t pointer to allocated data structure
  * @return NULL if unsufficient memory for allocation
  */
-PtSet setCreate();
+set_t set_create();
 
 /**
  * @brief Adds an element to a set if it isn't already present
@@ -44,7 +49,7 @@ PtSet setCreate();
  * @return SET_NULL if set is null
  * @return SET_DUPLICATE if the element is already present in the set
  */
-int setAdd(PtSet set, SetElem elem);
+int set_add(set_t *set, set_elem_t elem);
 
 /**
  * @brief Removes an object from a set if it exists
@@ -57,7 +62,7 @@ int setAdd(PtSet set, SetElem elem);
  * @return SET_NULL if set is null
  * @return SET_MISSING_ELEM if the element does not exist in the set
  */
-int setRemove(PtSet set, SetElem elem);
+int set_remove(set_t *set, set_elem_t elem);
 
 /**
  * @brief Checks if a set contains a certain element
@@ -68,29 +73,29 @@ int setRemove(PtSet set, SetElem elem);
  * @return true if the set contains the element
  * @return false  if the set does not contain the element
  */
-bool setContains(PtSet set, SetElem elem);
+bool set_contains(set_t *set, set_elem_t elem);
 
 /**
  * @brief Retrieves the size of a set
  * 
  * @param set pointer to the list
- * @param ptSize [out] address of an integer variable to store the value
+ * @param size [out] address of an integer variable to store the value
  * 
  * @return SET_OK if successful
  * @return SET_NULL if set is NULL
  */
-int setSize(PtSet set, int *ptSize);
+int set_size(set_t set, int *size);
 
 /**
  * @brief Checks if a set is a subset of another set
  * 
- * @param subSet pointer to the subSet
- * @param set pointer to the set that could contain the subSet
+ * @param subset pointer to the subset
+ * @param set pointer to the set that could contain the subset
  * 
  * @return true if "subSet" is a subset of "set"
  * @return false if "subSet" is not a subset of "set"
  */
-bool setSubset(PtSet subSet, PtSet set);
+bool set_subset(set_t *subset, set_t *set);
 
 /**
  * @brief Checks if a set is empty
@@ -100,7 +105,7 @@ bool setSubset(PtSet subSet, PtSet set);
  * @return true if set is empty or NULL
  * @return false if set is not empty
  */
-bool isSetEmpty(PtSet set);
+bool is_set_empty(set_t *set);
 
 /**
  * @brief Clears the content of a set.
@@ -110,7 +115,7 @@ bool isSetEmpty(PtSet set);
  * @return SET_OK if successful
  * @return SET_NULL if set is NULL
  */
-int setClear(PtSet set);
+int set_clear(set_t *set);
 
 /**
  * @brief Retrieves all the values of the set in an array
@@ -120,7 +125,7 @@ int setClear(PtSet set);
  * @return an array with the values
  * @return NULL if set is NULL
  */
-SetElem* setValues(PtSet set);
+set_elem_t *set_values(set_t *set);
 
 
 /**
@@ -128,14 +133,14 @@ SetElem* setValues(PtSet set);
  * 
  * @param set pointer to the set
  */
-void setPrint(PtSet set);
+void set_print(set_t *set);
 
 /**
  * @brief Free all resources of a set.
  * 
- * @param ptSet address of pointer to the set
+ * @param set address of pointer to the set
  * 
  * @returns SET_OK if success
  * @returns SET_NULL if set is NULL
  */
-int setDestroy(PtSet *ptSet);
+int set_destroy(set_t *set);

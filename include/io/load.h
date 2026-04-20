@@ -1,11 +1,19 @@
 /**
  * @file load.h
- * @author Filipe Paredes (filipeparedes3@gmail.com)
+ * 
  * @brief Imports data from medals, athletes and hosts
+ * 
+ * @author Filipe Paredes (filipeparedes3@gmail.com)
+ * 
+ * @version 2.0.0
+ * @date 2026-04-20
+ * 
+ * @bug No known bugs.
  */
 
 #pragma once
 
+// Error codes
 #define FILE_NOT_FOUND 3
 #define ARRAY_NULL 4
 #define LOAD_OK 5
@@ -17,7 +25,7 @@
 #include "domain/medal.h"
 #include "io/input.h"
 #include "utils/date.h"
-#include "utils/stringWrap.h"
+#include "utils/string_wrap.h"
 
 /**
  * @brief Loads the medal.csv file into a list
@@ -27,7 +35,7 @@
  * 
  * @returns Error code, LOAD_OK if load was successful
  */
-int importMedals(PtMedal array, int* size);
+int import_medals(medal_t *array, int* size);
 
 /**
  * @brief Loads the athletes.csv file into a list
@@ -37,7 +45,7 @@ int importMedals(PtMedal array, int* size);
  * 
  * @return Error code, LOAD_OK if load was successful
  */
-int importAthletes(PtList list, int* size);
+int import_athletes(list_t *list, int* size);
 
 /**
  * @brief Reads the hosts.csv file
@@ -47,7 +55,7 @@ int importAthletes(PtList list, int* size);
  * @param size an address to an integer, where it will store the size of the map
  * @param map An array to load the file into
  */
-int importHosts(PtMap map, int* size);
+int import_hosts(map_t *map, int* size);
 
 /**
  * @brief Counts the lines in a csv file
@@ -57,4 +65,4 @@ int importHosts(PtMap map, int* size);
  * @returns FILE_NOT_FOUND if file was not found
  * @returns The number of lines in the file
  */
-int countFileLines(FILE* file);
+int count_file_lines(FILE* file);

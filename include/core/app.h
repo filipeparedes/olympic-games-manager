@@ -1,8 +1,14 @@
 /**
  * @file app.h
+ * 
+ * @brief Header file containing the definition and related functions for the app state
+ * 
  * @author Filipe Paredes (filipeparedes3@gmail.com)
  * 
- * @brief Header file containing the definition and related functions for the App State 
+ * @version 2.0.0
+ * @date 2026-04-20
+ * 
+ * @bug No known bugs.
  */
 
 #pragma once
@@ -12,34 +18,30 @@
 #include "adt/list.h"
 #include "domain/host.h"
 #include "domain/medal.h"
-#include "domain/topnstats.h"
+#include "domain/top_n_stats.h"
 
-typedef struct appState {
-    PtList athletesList;
-    PtMap hostsMap;
-    PtMedal medalsArray;
+typedef struct app_state {
+    list_t *athletes_list;
+    map_t *hosts_map;
+    medal_t *medals_array;
 
     //Metadata
-    int athletesCount;
-    int hostsCount;
-    int medalsCount;
+    int medals_count;
 
     //System state
-    bool dataLoaded;
-} AppState;
-
-typedef struct appState* PtAppState;
+    bool data_loaded;
+} app_state_t;
 
 /**
- * @brief Initializes and allocates memory for an AppState
+ * @brief Initializes and allocates memory for an app_state_t
  * 
  * @return The pointer to the app state
  */
-PtAppState createAppState();
+app_state_t *create_app_state();
 
 /**
- * @brief Completely deletes an App State from memory
+ * @brief Completely deletes an app_state_t from memory
  * 
- * @param app a pointer to the app state to delete
+ * @param app an address of the pointer to the app_state_t to delete
  */
-void destroyAppState (PtAppState* app);
+void destroy_app_state (app_state_t **app);
