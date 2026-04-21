@@ -6,7 +6,7 @@
  *
  * @author Filipe Paredes (filipeparedes3@gmail.com)
  *
- * @version 1.0.1
+ * @version 1.0.2
  * @date 2026-04-20
  *
  * @copyright Copyright (c) 2026
@@ -171,6 +171,7 @@ static int do_load_a(app_state_t *app, int argc, char **argv, char *msg) {
     switch (ret) {
         case LOAD_OK:
             printf("%d athlete records imported.\n", athletes_size);
+            app->athletes_loaded = true;
             return CMD_OK;
         case FILE_NOT_FOUND:
             snprintf(msg, MAX_MSG_LEN, "load_a: athletes file not found.");
@@ -197,12 +198,29 @@ static int do_load_m(app_state_t *app, int argc, char **argv, char *msg) {
         snprintf(msg, MAX_MSG_LEN, "Usage: load_m (no arguments expected)");
         return CMD_ERROR;
     }
-
+ 
+    // Pre-allocate the array — import_medals requires a non-NULL pointer
+    FILE *f = fopen("data/medals.csv", "r");
+    if (f == NULL) {
+        snprintf(msg, MAX_MSG_LEN, "load_m: medals file not found.");
+        return CMD_ERROR;
+    }
+    int line_count = count_file_lines(f);
+    fclose(f);
+ 
+    if (app->medals_array != NULL) free(app->medals_array);
+    app->medals_array = (medal_t *)malloc(sizeof(medal_t) * line_count);
+    if (app->medals_array == NULL) {
+        snprintf(msg, MAX_MSG_LEN, "load_m: insufficient memory.");
+        return CMD_ERROR;
+    }
+ 
     int ret = import_medals(app->medals_array, &app->medals_count);
-
+ 
     switch (ret) {
         case LOAD_OK:
             printf("%d medal records imported.\n", app->medals_count);
+            app->medals_loaded = true;
             return CMD_OK;
         case FILE_NOT_FOUND:
             snprintf(msg, MAX_MSG_LEN, "load_m: medals file not found.");
@@ -236,6 +254,7 @@ static int do_load_h(app_state_t *app, int argc, char **argv, char *msg) {
     switch (ret) {
         case LOAD_OK:
             printf("%d host records imported.\n", hosts_size);
+            app->hosts_loaded = true;
             return CMD_OK;
         case FILE_NOT_FOUND:
             snprintf(msg, MAX_MSG_LEN, "load_h: hosts file not found.");
@@ -282,8 +301,14 @@ static int do_clear(app_state_t *app, int argc, char **argv, char *msg) {
         app->medals_array = NULL;
     }
 
+    //recreate list & map after destroying
+    app->athletes_list = list_create();
+    app->hosts_map = map_create();
+
     app->medals_count = 0;
-    app->data_loaded  = false;
+    app->athletes_loaded = false;
+    app->medals_loaded   = false;
+    app->hosts_loaded    = false;
 
     printf("Records deleted from Athletes (%d) | Medals (%d) | Hosts (%d)\n",
            prev_athletes, prev_medals, prev_hosts);
@@ -307,7 +332,7 @@ static int do_show_all(app_state_t *app, int argc, char **argv, char *msg) {
         snprintf(msg, MAX_MSG_LEN, "Usage: show_all (no arguments expected)");
         return CMD_ERROR;
     }
-    if (!app->data_loaded) {
+    if (!app->athletes_loaded) {
         snprintf(msg, MAX_MSG_LEN, "show_all: no athlete records loaded. Run 'load_a' first.");
         return CMD_ERROR;
     }
@@ -332,7 +357,7 @@ static int do_show_participations(app_state_t *app, int argc, char **argv, char 
         snprintf(msg, MAX_MSG_LEN, "Usage: show_participations <n>");
         return CMD_ERROR;
     }
-    if (!app->data_loaded) {
+    if (!app->athletes_loaded) {
         snprintf(msg, MAX_MSG_LEN, "show_participations: no athlete records loaded. Run 'load_a' first.");
         return CMD_ERROR;
     }
@@ -373,7 +398,7 @@ static int do_show_first(app_state_t *app, int argc, char **argv, char *msg) {
         snprintf(msg, MAX_MSG_LEN, "Usage: show_first <YYYY>");
         return CMD_ERROR;
     }
-    if (!app->data_loaded) {
+    if (!app->athletes_loaded) {
         snprintf(msg, MAX_MSG_LEN, "show_first: no athlete records loaded. Run 'load_a' first.");
         return CMD_ERROR;
     }
@@ -419,7 +444,7 @@ static int do_show_host(app_state_t *app, int argc, char **argv, char *msg) {
         snprintf(msg, MAX_MSG_LEN, "Usage: show_host <City YYYY>  (e.g. show_host Montreal 1976)");
         return CMD_ERROR;
     }
-    if (!app->data_loaded) {
+    if (!app->hosts_loaded) {
         snprintf(msg, MAX_MSG_LEN, "show_host: no host records loaded. Run 'load_h' first.");
         return CMD_ERROR;
     }
@@ -457,7 +482,7 @@ static int do_discipline_statistics(app_state_t *app, int argc, char **argv, cha
         snprintf(msg, MAX_MSG_LEN, "Usage: discipline_statistics <City YYYY>  (e.g. discipline_statistics Sydney 2000)");
         return CMD_ERROR;
     }
-    if (!app->data_loaded) {
+    if (!app->medals_loaded || !app->hosts_loaded) {
         snprintf(msg, MAX_MSG_LEN, "discipline_statistics: medals and hosts must be loaded first (load_m, load_h).");
         return CMD_ERROR;
     }
@@ -496,7 +521,7 @@ static int do_athlete_info(app_state_t *app, int argc, char **argv, char *msg) {
         snprintf(msg, MAX_MSG_LEN, "Usage: athlete_info <athleteID>");
         return CMD_ERROR;
     }
-    if (!app->data_loaded) {
+    if (!app->athletes_loaded) {
         snprintf(msg, MAX_MSG_LEN, "athlete_info: athletes and medals must be loaded first (load_a, load_m).");
         return CMD_ERROR;
     }
@@ -536,7 +561,7 @@ static int do_topn(app_state_t *app, int argc, char **argv, char *msg) {
         snprintf(msg, MAX_MSG_LEN, "Usage: topn <season> <startYear> <endYear> <n>  (e.g. topn Summer 1990 2010 5)");
         return CMD_ERROR;
     }
-    if (!app->data_loaded) {
+    if (!app->medals_loaded) {
         snprintf(msg, MAX_MSG_LEN, "topn: medals must be loaded first (load_m).");
         return CMD_ERROR;
     }
@@ -586,7 +611,7 @@ static int do_medals_won(app_state_t *app, int argc, char **argv, char *msg) {
         snprintf(msg, MAX_MSG_LEN, "Usage: medals_won <country> <year> <season>  (e.g. medals_won Portugal 2000 Summer)");
         return CMD_ERROR;
     }
-    if (!app->data_loaded) {
+    if (!app->medals_loaded) {
         snprintf(msg, MAX_MSG_LEN, "medals_won: medals must be loaded first (load_m).");
         return CMD_ERROR;
     }

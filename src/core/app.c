@@ -5,7 +5,7 @@
  * 
  * @author Filipe Paredes (filipeparedes3@gmail.com)
  * 
- * @version 2.0.1
+ * @version 2.0.2
  * @date 20-04-2026
  * 
  * @copyright Copyright (c) 2026
@@ -41,7 +41,9 @@ app_state_t *create_app_state() {
 
     //initialize counters
     app->medals_count = 0;
-    app->data_loaded = false;
+    app->athletes_loaded = false;
+    app->medals_loaded = false;
+    app->hosts_loaded = false;
 
     return app;
 }

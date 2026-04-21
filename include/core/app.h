@@ -5,7 +5,7 @@
  * 
  * @author Filipe Paredes (filipeparedes3@gmail.com)
  * 
- * @version 2.0.1
+ * @version 2.0.2
  * @date 2026-04-20
  * 
  * @bug No known bugs.
@@ -29,7 +29,9 @@ typedef struct app_state {
     int medals_count;
 
     //System state
-    bool data_loaded;
+    bool athletes_loaded;
+    bool medals_loaded;
+    bool hosts_loaded;
 } app_state_t;
 
 /**

@@ -5,7 +5,7 @@
  * 
  * @author Filipe Paredes (filipeparedes3@gmail.com)
  * 
- * @version 2.0.0
+ * @version 2.0.1
  * @date 2026-04-20
  * 
  * @copyright Copyright (c) 2026
@@ -77,8 +77,6 @@ void paginate(list_t *athletes) {
         }
     
     }
-
-    free(sorted_list);
 }
 
 void paginate_set(set_t *statistics){
