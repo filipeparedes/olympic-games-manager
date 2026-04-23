@@ -162,6 +162,7 @@ Starts with capacity 20, doubles on overflow via `realloc`.
 |---|---|
 | `list_create()` | Allocates a new empty list |
 | `list_destroy(list**)` | Frees the element array and the struct. Takes a double pointer and sets it to `NULL`. |
+| `list_append(list, elem)` | Inserts an element at the end of the list |
 | `list_add(list, rank, elem)` | Inserts at position `rank`, shifting elements right |
 | `list_get(list, rank, elem*)` | Retrieves element at `rank` by value copy |
 | `list_size(list, size*)` | Writes the current element count to `size` |
@@ -275,10 +276,6 @@ Formatted output and pagination for the shell.
 | `print_host_details(char**)` | Prints the 4-field host data array |
 | `print_athlete_info(...)` | Prints a full athlete profile with medal lines |
 | `print_top_n(top_n_stats_t*, size, n)` | Prints the top N rows of a sorted country ranking |
-| `sort_list(list*)` | Bubble sort on the list in-place by athlete name. Returns the same pointer. |
-| `sort_top_n(top_n_stats_t*, size)` | Bubble sort on the array in-place by total medals descending. Returns the same pointer. |
-
-> **Important:** `sort_list` and `sort_top_n` sort in-place and return the same pointer they receive. Do not free the result separately from the original.
 
 ---
 
@@ -366,6 +363,9 @@ No changes to `shell.c` or any other file are required.
 | `medals_statistics` (char**) | `get_athlete_info` in `logic.c` | caller in `do_athlete_info` after use |
 | `top_n_list` | `get_top_n_countries` in `logic.c` | caller in `do_topn` after use |
 | `split_string` tokens | `split_string` in `input.c` | `load.c` after each parsed line |
+| `discipline_stats` (set) | `get_discipline_statistics` in `logic.c` | Caller in `do_discipline_statistics` after use |
+| `map_key_t` array | `map_keys()` (inside logic functions) | Immediately after the loop in `get_discipline_statistics` / `get_athlete_info` |
+| Individual `char*` strings | `malloc` inside `get_athlete_info` (for each medal line) | Loop in `do_athlete_info` (before freeing the char** array) |
 
 > `sort_list` and `sort_top_n` sort in-place and do not allocate new memory. The returned pointer is the same as the input — do not free it separately.
 
@@ -385,10 +385,6 @@ NULL pointer checks are present at the entry point of every ADT function and eve
 
 ## 8. Known Limitations & Technical Debt
 
-**In-place sorting** — `sort_list` sorts the `athletes_list` permanently on first `show_all` call. Subsequent loads via `load_a` will re-import in CSV order, but if `show_all` is called again the list is re-sorted.
-
 **`data_loaded` flags are per-dataset but guards are coarse** — some commands check only `athletes_loaded` when they implicitly also need medals to be loaded for full results. This could be tightened.
-
-**($O(n^2)$) and ($O(n^3)$) complexity** — `get_top_n_countries` and `get_athlete_info` contain nested loops over medals, athletes, and hosts. Current implementation uses Bubble Sort ($O(n^2)$) for simplicity; future iterations will implement QuickSort ($O(n \log n)$) to handle larger datasets with sub-second latency.
 
 **`medals_array` pre-allocation** — the array is sized by `count_file_lines`, which counts all lines including blank ones. This may over-allocate slightly but is not a correctness issue.
