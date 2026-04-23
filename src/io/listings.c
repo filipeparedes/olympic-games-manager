@@ -5,7 +5,7 @@
  * 
  * @author Filipe Paredes (filipeparedes3@gmail.com)
  * 
- * @version 2.2.0
+ * @version 2.2.1
  * @date 2026-04-20
  * 
  * @copyright Copyright (c) 2026
@@ -106,6 +106,11 @@ void print_athlete_info(char** medals_statistics, int medals_stats_size, char *c
     printf("Country: %s\n", country);
     printf("Number of Participations: %d\n\n", participations);
     printf("=================== MEDALS ===================\n");
+
+    if (medals_stats_size <= 0){
+        printf("The athlete has not won any medals.\n");
+        return;
+    }
 
     for (int i = 0; i<medals_stats_size; i++) {
         printf("%s\n", medals_statistics[i]);

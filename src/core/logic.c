@@ -5,7 +5,7 @@
  * 
  * @author Filipe Paredes (filipeparedes3@gmail.com)
  * 
- * @version 2.2.2
+ * @version 2.2.1
  * @date 2026-04-21
  * 
  * @copyright Copyright (c) 2026
@@ -383,13 +383,10 @@ char **get_athlete_info(medal_t *medals, int medals_size, list_t *athletes, map_
         }
     }
 
+    free(keys);
+
     if (!country_found) {
-        printf("Athlete %s did not win any medals\n", athlete_id);
-        for (int j = 0; j < count; j++) {
-            free(data[j]);
-        }
-        free(data);
-        return NULL;
+        strcpy(country, "N/A"); 
     }
 
     *size = count;
