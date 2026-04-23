@@ -5,7 +5,7 @@
  * 
  * @author Filipe Paredes (filipeparedes3@gmail.com)
  * 
- * @version 2.0.2
+ * @version 2.1.0
  * @date 2026-04-20
  * 
  * @copyright Copyright (c) 2026
@@ -34,7 +34,6 @@ void paginate(list_t *athletes) {
     int size = 0;
     int command;
     list_size(athletes, &size);
-    list_t *sorted_list = sort_list(athletes);
 
     printf("%d ATHLETES FOUND \n", size);
 
@@ -56,7 +55,7 @@ void paginate(list_t *athletes) {
                     printf("\n");
                     break;
                 } else{
-                    list_get(sorted_list, i, &athlete);
+                    list_get(athletes, i, &athlete);
                     list_elem_print(athlete);
                 }
                 
@@ -157,28 +156,6 @@ top_n_stats_t *sort_top_n(top_n_stats_t *top_n_list, int top_n_size){
     }
 
     return sorted_array;
-}
-
-list_t *sort_list(list_t *athletes) {
-    int list_size_var;
-    list_size(athletes, &list_size_var);
-    list_t *sorted_list = athletes;
-
-    for (int i = 0; i < list_size_var-1; i++) {
-        for (int j = 0; j < list_size_var-i-1; j++) { 
-
-            athlete_t elem, elem2;
-            list_get(sorted_list, j, &elem);
-            list_get(sorted_list, j+1, &elem2);
-
-            if (strcmp(elem.athlete_name, elem2.athlete_name) > 0) {
-                list_set(sorted_list, j+1, elem, &elem2);
-                list_set(sorted_list, j, elem2, &elem);
-            }
-        }
-    }
-    
-   return sorted_list;
 }
 
 

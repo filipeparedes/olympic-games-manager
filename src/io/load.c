@@ -92,6 +92,8 @@ int import_athletes(list_t *list, int *size){
         free(split_str);
     }
 
+
+    list_sort(list);
     list_size(list, size);
 
     fclose(file);

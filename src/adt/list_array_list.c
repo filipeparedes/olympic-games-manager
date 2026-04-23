@@ -7,7 +7,7 @@
  * @author Bruno Silva (brunomnsilva@gmail.com) - Original Version
  * @author Filipe Paredes (filipeparedes3@gmail.com) - Refactor & Maintenance
  * 
- * @version 2.0.2
+ * @version 2.1.0
  * @date 2026-04-20
  * 
  * @bug No known bugs.
@@ -18,6 +18,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <string.h>
 
 #define INITIAL_CAPACITY 20
 
@@ -133,6 +134,20 @@ int list_size(list_t *list, int *size) {
 	*size = list->size;
 
 	return LIST_OK;
+}
+
+//Internal aux function to sort list
+static int compare_athletes(const void *a, const void *b) {
+    const athlete_t *at_a = (const athlete_t *)a;
+    const athlete_t *at_b = (const athlete_t *)b;
+    return strcmp(at_a->athlete_name, at_b->athlete_name);
+}
+
+list_t *list_sort(list_t *athletes) {
+    int size;
+    list_size(athletes, &size);
+    qsort(athletes->elements, size, sizeof(athlete_t), compare_athletes);
+    return athletes;
 }
 
 bool list_is_empty(list_t *list) {

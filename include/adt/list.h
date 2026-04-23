@@ -7,7 +7,7 @@
  * @author Bruno Silva (brunomnsilva@gmail.com) - Original Version
  * @author Filipe Paredes (filipeparedes3@gmail.com) - Refactor & Maintenance
  * 
- * @version 2.0.0
+ * @version 2.1.0
  * @date 2026-04-20
  * 
  * @bug No known bugs.
@@ -147,6 +147,14 @@ bool list_is_empty(list_t *list);
  * @return LIST_NULL if 'list' is NULL 
  */
 int list_clear(list_t *list);
+
+/**
+ * @brief Sort the list using qsort()
+ * 
+ * @param athletes the list to sort
+ * @return list_t the sorted ist
+ */
+list_t *list_sort(list_t *athletes);
 
 /**
  * @brief Prints the contents of a list.

@@ -5,7 +5,7 @@
  * 
  * @author Filipe Paredes (filipeparedes3@gmail.com)
  * 
- * @version 2.2.0
+ * @version 2.2.1
  * @date 2026-04-21
  * 
  * @copyright Copyright (c) 2026
