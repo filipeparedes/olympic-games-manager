@@ -5,7 +5,7 @@
  * 
  * @author Filipe Paredes (filipeparedes3@gmail.com)
  * 
- * @version 2.0.1
+ * @version 2.0.2
  * @date 2026-04-20
  * 
  * @copyright Copyright (c) 2026
@@ -137,8 +137,8 @@ void print_top_n(top_n_stats_t *top_n_list, int top_n_size, int n) {
 top_n_stats_t *sort_top_n(top_n_stats_t *top_n_list, int top_n_size){
     top_n_stats_t *sorted_array = top_n_list;
 
-    for (int i = 0; i<top_n_size; i++) {
-        for (int j = 0; j<top_n_size; j++) {
+    for (int i = 0; i<top_n_size - 1; i++) {
+        for (int j = 0; j<top_n_size - 1; j++) {
             if (sorted_array[j].total_medals < sorted_array[j+1].total_medals) {
                 top_n_stats_t temp;
                 temp = sorted_array[j];

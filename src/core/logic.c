@@ -5,7 +5,7 @@
  * 
  * @author Filipe Paredes (filipeparedes3@gmail.com)
  * 
- * @version 2.1.1
+ * @version 2.2.0
  * @date 2026-04-21
  * 
  * @copyright Copyright (c) 2026
@@ -29,6 +29,129 @@
 #include "domain/medal.h"
 #include "domain/discipline_stats.h"
 #include "domain/top_n_stats.h"
+
+#define MAX_COUNTRIES 100
+#define MAX_DISCIPLINES 60
+ 
+typedef struct {
+    char discipline[MAX_DISCIPLINE_SIZE];
+ 
+    /* country medal counts */
+    char   countries[MAX_COUNTRIES][MAX_COUNTRY_SIZE];
+    int    country_counts[MAX_COUNTRIES];
+    int    country_count;
+ 
+    /* gender counts */
+    int    women_medals;
+    int    total_medals;
+} discipline_agg_t;
+
+set_t *get_discipline_statistics(medal_t *medals, int medals_size, map_t *hosts, char *edition_name) {
+    int host_size;
+    bool found = false;
+    char game_slug[100] = {0};
+ 
+    map_size(hosts, &host_size);
+ 
+    if (medals_size == 0) { printf("Medals array is empty.\n");  return NULL; }
+    if (host_size == 0)   { printf("Hosts map is empty.\n");     return NULL; }
+ 
+    set_t *set = set_create();
+    if (set == NULL) { printf("Failed to create the set.\n"); return NULL; }
+ 
+    /* --- Find the slug for the requested edition --- */
+    map_key_t *keys = map_keys(hosts);
+    for (int i = 0; i < host_size; i++) {
+        host_t host;
+        map_get(hosts, keys[i], &host);
+        if (strcmp(host.game_name, edition_name) == 0) {
+            strncpy(game_slug, keys[i].text, sizeof(game_slug) - 1);
+            found = true;
+            break;
+        }
+    }
+ 
+    if (!found) {
+        printf("No edition found: %s\n", edition_name);
+        set_destroy(&set);
+        return NULL;
+    }
+ 
+    /* --- Aggregate per discipline --- */
+    discipline_agg_t *aggs = (discipline_agg_t *)calloc(MAX_DISCIPLINES, sizeof(discipline_agg_t));
+    if (aggs == NULL) {
+        printf("Insufficient memory for aggregation.\n");
+        set_destroy(&set);
+        return NULL;
+    }
+    int agg_count = 0;
+ 
+    for (int i = 0; i < medals_size; i++) {
+        if (strcmp(medals[i].game, game_slug) != 0) continue;
+ 
+        /* Find or create aggregation entry for this discipline */
+        int d = -1;
+        for (int k = 0; k < agg_count; k++) {
+            if (strcmp(aggs[k].discipline, medals[i].discipline) == 0) {
+                d = k;
+                break;
+            }
+        }
+        if (d == -1) {
+            if (agg_count >= MAX_DISCIPLINES) continue; /* safety cap */
+            d = agg_count++;
+            strncpy(aggs[d].discipline, medals[i].discipline, MAX_DISCIPLINE_SIZE - 1);
+        }
+ 
+        aggs[d].total_medals++;
+ 
+        /* Track gender */
+        if (medals[i].gender == 'W') aggs[d].women_medals++;
+ 
+        /* Track country medal count */
+        int c = -1;
+        for (int k = 0; k < aggs[d].country_count; k++) {
+            if (strcmp(aggs[d].countries[k], medals[i].country) == 0) {
+                c = k;
+                break;
+            }
+        }
+        if (c == -1 && aggs[d].country_count < MAX_COUNTRIES) {
+            c = aggs[d].country_count++;
+            strncpy(aggs[d].countries[c], medals[i].country, MAX_COUNTRY_SIZE - 1);
+            aggs[d].country_counts[c] = 0;
+        }
+        if (c != -1) aggs[d].country_counts[c]++;
+    }
+ 
+    /* --- Build discipline_stats_t entries and insert into set --- */
+    for (int d = 0; d < agg_count; d++) {
+        discipline_stats_t dstats = {0};
+ 
+        strncpy(dstats.discipline_name, aggs[d].discipline, MAX_DISCIPLINE_SIZE - 1);
+ 
+        /* Find top country */
+        int best = -1, best_count = 0;
+        for (int c = 0; c < aggs[d].country_count; c++) {
+            if (aggs[d].country_counts[c] > best_count) {
+                best_count = aggs[d].country_counts[c];
+                best = c;
+            }
+        }
+        if (best != -1)
+            strncpy(dstats.top_medals_country, aggs[d].countries[best], MAX_COUNTRY_SIZE - 1);
+ 
+        /* Women ratio */
+        dstats.women_ratio = (aggs[d].total_medals > 0)
+            ? (float)aggs[d].women_medals / (float)aggs[d].total_medals
+            : 0.0f;
+ 
+        set_add(set, dstats);
+    }
+ 
+    free(aggs);
+    return set;
+}
 
 list_t *filter_list_by_participations(list_t *athletes, int participations){
 
@@ -155,56 +278,6 @@ char **get_host_data(map_t *hosts, char *edition_name){
     sprintf(data[3], "%d", day_dif);
 
     return data;
-}
-
-set_t *get_discipline_statistics(medal_t *medals, int medals_size, map_t *hosts, char *edition_name) {
-    int host_size;
-    char *game_slug;
-    bool found = false;
-    map_size(hosts, &host_size);
-
-    if (medals_size == 0) {
-        printf("Medals array is empty.\n");
-        return NULL;
-    }
-    if (host_size == 0){
-        printf("Hosts map is empty.\n");
-        return NULL;
-    }
-
-    set_t *set = set_create();
-
-    if (set == NULL) {
-        printf("Failed to create the set.\n");
-        return NULL;
-    }
-
-    map_key_t *keys = map_keys(hosts);
-
-    for(int i = 0; i<host_size; i++) {
-        host_t host;
-        map_get(hosts, keys[i], &host);
-        if (strcmp(host.game_name, edition_name) == 0) {
-            game_slug = keys[i].text;
-            found = true;
-        }
-    }
-
-    if (!found) {
-        printf("No editions found.\n");
-        set_destroy(&set);
-        return NULL;
-    }
-
-    for (int i = 0; i<medals_size; i++) {
-        discipline_stats_t dstats;
-
-        if (strcmp(medals[i].game, game_slug) == 0) {
-            strcpy(dstats.discipline_name, medals[i].discipline);
-        }
-    }
-
-    return set;
 }
 
 char **get_athlete_info(medal_t *medals, int medals_size, list_t *athletes, map_t *hosts, char *athlete_id, char *country, int *participations, int *birthYear, int *size) {
