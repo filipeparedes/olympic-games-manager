@@ -5,7 +5,7 @@
  * 
  * @author Filipe Paredes (filipeparedes3@gmail.com)
  * 
- * @version 1.0.1
+ * @version 1.1.0
  * @date 2026-04-20
  * 
  * @copyright Copyright (c) 2026
@@ -19,7 +19,9 @@
 #include "io/input.h"
 #include "io/shell.h"
 
- void run_shell(app_state_t *app) {
+static void show_welcome();
+
+void run_shell(app_state_t *app) {
     //input
     char line[200];
     char *argv[MAX_ARGS];
@@ -28,6 +30,8 @@
     //output
     char msg[MAX_MSG_LEN];
     int status = CMD_OK;
+
+    show_welcome();
 
     while (status != CMD_QUIT) {
         printf("\nbash@OlympicGM:~$ ");
@@ -51,3 +55,26 @@
             printf("[ERROR] %s\n", msg);
     }
  }
+
+ static void show_welcome() {
+    printf("====================================================\n");
+    printf("  ___  _                       _        ____ __  __ \n");
+    printf(" / _ \\| |                     (_)      / ___|  \\/  |\n");
+    printf("| | | | |_   _ _ __ ___  _ __  _  ___ | |  _| \\  / |\n");
+    printf("| |_| | | |_| | | | | | | |_) | | (__ | |___| |  | |\n");
+    printf(" \\___/|_|\\__, |_| |_| |_| .__/|_|\\___| \\____|_|  |_|\n");
+    printf("          __/ |         | |                         \n");
+    printf("         |___/          |_|                         \n");
+    printf("\n");
+    printf(" __          __  _                                 \n");
+    printf(" \\ \\        / / | |                                \n");
+    printf("  \\ \\  /\\  / /__| | ___ ___  _ __ ___   ___        \n");
+    printf("   \\ \\/  \\/ / _ \\ |/ __/ _ \\| '_ ` _ \\ / _ \\       \n");
+    printf("    \\  /\\  /  __/ | (_| (_) | | | | | |  __/       \n");
+    printf("     \\/  \\/ \\___|_|\\___\\___/|_| |_| |_|\\___|       \n");
+    printf("\n");
+    printf("====================================================\n");
+    printf("      Welcome to the Olympic Games Manager v2.0     \n");
+    printf("      Type 'help' to show all available commands.     \n");
+    printf("====================================================\n\n");
+}
