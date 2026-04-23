@@ -5,7 +5,7 @@
  * 
  * @author Filipe Paredes (filipeparedes3@gmail.com)
  * 
- * @version 2.0.0
+ * @version 2.1.0
  * @date 2026-04-20
  * 
  * @bug No known bugs.
@@ -29,3 +29,11 @@ typedef struct top_n_stats {
     float avg_medals_game_days;                  
     
 } top_n_stats_t;
+
+/**
+ * @brief Sorts a top_n_stats type array
+ * 
+ * @param top_n_list the top_n_stats type array
+ * @param top_n_size the size of the array
+ */
+void sort_top_n(top_n_stats_t *top_n_list, int top_n_size);

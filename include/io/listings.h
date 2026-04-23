@@ -5,7 +5,7 @@
  * 
  * @author Filipe Paredes (filipeparedes3@gmail.com)
  * 
- * @version 2.0.0
+ * @version 2.1.0
  * @date 2026-04-20
  * 
  * @bug No known bugs.
@@ -77,14 +77,3 @@ void print_athlete_info(char **medals_statistics, int medals_stats_size, char *c
  * 
  */
 void print_top_n(top_n_stats_t *top_n_list, int top_n_size, int n);
-
-
-/**
- * @brief Sorts a top_n array by total_medals in descending order, 
- * and by country name in case of tie
- * 
- * @param top_n_list the array to sort
- * @param top_n_size the size of the array
- * @return the sorted array
- */
-top_n_stats_t *sort_top_n(top_n_stats_t *topNList, int topNSize);

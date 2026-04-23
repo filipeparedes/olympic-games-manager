@@ -5,7 +5,7 @@
  * 
  * @author Filipe Paredes (filipeparedes3@gmail.com)
  * 
- * @version 2.1.1
+ * @version 2.2.0
  * @date 2026-04-20
  * 
  * @copyright Copyright (c) 2026
@@ -26,8 +26,6 @@
 #include "adt/set.h"
 #include "domain/athlete.h"
 #include "domain/top_n_stats.h"
-
-list_t *sort_list(list_t *athletes);
 
 void paginate(list_t *athletes) {
     int page = 0;
@@ -118,44 +116,19 @@ void print_top_n(top_n_stats_t *top_n_list, int top_n_size, int n) {
         printf("\n\n%-40s | %-12s | %-30s | %-28s\n", "Country", "Total medals", "Average medals by game edition", "Average medals by game day");
         printf("--------------------------------------------------------------------------------------------------------------------------\n");
 
-        top_n_stats_t *sorted_top_n = sort_top_n(top_n_list, top_n_size);
+        sort_top_n(top_n_list, top_n_size);
 
         if (n>top_n_size) {
             for (int i = 0; i<top_n_size; i++) {
-             printf("%-40s | %-12d | %-30.2f | %-28.2f\n", sorted_top_n[i].country, sorted_top_n[i].total_medals, sorted_top_n[i].avg_medals_edition, sorted_top_n[i].avg_medals_game_days);
+             printf("%-40s | %-12d | %-30.2f | %-28.2f\n", top_n_list[i].country, top_n_list[i].total_medals, top_n_list[i].avg_medals_edition, top_n_list[i].avg_medals_game_days);
             }
 
         } else {
             for (int i = 0; i<n; i++) {
-             printf("%-40s | %-12d | %-30.2f | %-28.2f\n", sorted_top_n[i].country, sorted_top_n[i].total_medals, sorted_top_n[i].avg_medals_edition, sorted_top_n[i].avg_medals_game_days);
+             printf("%-40s | %-12d | %-30.2f | %-28.2f\n", top_n_list[i].country, top_n_list[i].total_medals, top_n_list[i].avg_medals_edition, top_n_list[i].avg_medals_game_days);
             }
             printf("\n\nCould not find more than %d results.\n", top_n_size);
         }
-}
-
-top_n_stats_t *sort_top_n(top_n_stats_t *top_n_list, int top_n_size){
-    top_n_stats_t *sorted_array = top_n_list;
-
-    for (int i = 0; i<top_n_size - 1; i++) {
-        for (int j = 0; j<top_n_size - 1; j++) {
-            if (sorted_array[j].total_medals < sorted_array[j+1].total_medals) {
-                top_n_stats_t temp;
-                temp = sorted_array[j];
-                sorted_array[j] = sorted_array[j+1];
-                sorted_array[j+1] = temp; 
-            } else if (sorted_array[j].total_medals == sorted_array[j+1].total_medals) {
-                if (strcmp(sorted_array[j].country, sorted_array[j+1].country) > 0) {
-                    top_n_stats_t temp;
-                    temp = sorted_array[j];
-                    sorted_array[j] = sorted_array[j+1];
-                    sorted_array[j+1] = temp;
-                }
-
-            }
-        }
-    }
-
-    return sorted_array;
 }
 
 
