@@ -5,7 +5,7 @@
  * 
  * @author Filipe Paredes (filipeparedes3@gmail.com)
  * 
- * @version 2.1.0
+ * @version 2.1.1
  * @date 2026-04-20
  * 
  * @copyright Copyright (c) 2026
@@ -86,7 +86,7 @@ void paginate_set(set_t *statistics){
 
     printf("%30s", "DISCIPLINE");
 	printf("%35s", "TOP MEDALS COUNTRY");
-    printf("%15s", "PARTICIPATIONS");
+    printf("%15s", "WOMEN RATIO");
     printf("===========================================================================================================================\n");
 
     set_print(statistics);

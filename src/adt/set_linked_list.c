@@ -5,7 +5,7 @@
  * 
  * @author Filipe Paredes (filipeparedes3@gmail.com)
  * 
- * @version 2.0.0
+ * @version 2.0.1
  * @date 2026-04-20
  * 
  * @copyright Copyright (c) 2026
@@ -200,7 +200,7 @@ int set_destroy(set_t **set) {
         free(remove);
     }
 
-    free(set);
+    free(*set);
 
     *set = NULL;
 

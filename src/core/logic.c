@@ -5,7 +5,7 @@
  * 
  * @author Filipe Paredes (filipeparedes3@gmail.com)
  * 
- * @version 2.2.1
+ * @version 2.2.2
  * @date 2026-04-21
  * 
  * @copyright Copyright (c) 2026
@@ -70,7 +70,8 @@ set_t *get_discipline_statistics(medal_t *medals, int medals_size, map_t *hosts,
             break;
         }
     }
- 
+    free(keys);
+
     if (!found) {
         printf("No edition found: %s\n", edition_name);
         set_destroy(&set);
