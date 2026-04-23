@@ -1,120 +1,136 @@
-[![Open in Visual Studio Code](https://classroom.github.com/assets/open-in-vscode-2e0aaae1b6195c2367325f4f02e2d04e9abb55f0b24a779b69b11b9e10269abc.svg)](https://classroom.github.com/online_ide?assignment_repo_id=15401930&assignment_repo_type=AssignmentRepo)
-# ATAD 23/24 - Project
+# 🏅 OlympicGM — Olympic Games Manager
 
-This is a C program *template* tailored for:
+A command-line shell application written in **C** for managing and querying Olympic Games data. Load datasets of athletes, medals, and host editions, then query them through an interactive shell interface.
 
-- GCC, GDB, MAKE, VALGRING and DOXYGEN
-- VS CODE editor
+> Originally developed as a university project. Later refactored from scratch for code quality, modularity, and scalability.
 
-## Compiling and executing
+---
 
-Edit the `makefile` to comply with your source files and then, e.g.:
+## Features
 
-```console
-$> make
-```
+- Interactive Unix-style shell with argument-based commands
+- Load and manage three independent CSV datasets simultaneously
+- Paginated, alphabetically sorted athlete listings
+- Filter athletes by participation count or first participation year
+- Query host edition details (city, country, duration)
+- Discipline statistics per Olympic edition
+- Full athlete profile with medal breakdown
+- Top N countries ranked by weighted medal score over a season and year range
+- Medals won by country from a given year onwards in a given season
 
-If you didn't change the name of the *executable* (by default, `prog`), then:
+---
 
-```console
-$> ./prog
-```
+## Requirements
 
-## Using valgrind
+- GCC (or any C99-compatible compiler)
+- GNU Make
 
-*Valgrind* is very useful to detect "memory leaks" if your program uses *dynamic memory allocation*. You must compile the program with *debug* symbols and then run the executable through `valgrind`:
+---
 
-```console
-$> make debug
-$> valgrind --leak-check=full ./prog 
-```
-
-Alternatively, you can use the *bash script* already included:
-
-```console
-$> make debug
-$> bash mem_check.sh
-```
-
-**When the program exits** it will present you with memory leak information.
-
-## Debugging
-
-In the **Run** tab (left side) you should see a green play icon ▶️ at the top beside "gdb - Debug project". Click on it and the debug will start. Do not forget to set your *breakpoints*.
-
-## Generating documentation
-
-You'll need `doxygen` installed and follow the doxygen documentation format. A `Doxyfile` is already provided that is suited for the C language. Use:
+## Building & Running
 
 ```bash
-$> doxygen Doxyfile
+# Build and run
+make run
+
+# Build only
+make
+
+# Build with debug symbols
+make debug
+
+# Clean build artifacts
+make clean
 ```
 
-and you'll end up with a `html` folder containing the generated documentation.
+The Makefile automatically discovers all `.c` files under `src/` — no manual configuration needed when adding new source files.
 
-## Input Module
+---
 
-This template project includes the `input` module. You should use it for *user input* as it provides a relatively robust mechanism to read mixed data and performs validation.
+## Data Files
 
-Below is a sample program which exemplifies the usage of this library:
+Make sure the following CSV files are under `data/` before running:
 
-```cpp
-#include <stdio.h>
-#include <stdlib.h>
+| File | Description |
+|---|---|
+| `data/athletes.csv` | Athlete biographical and participation records |
+| `data/medals.csv` | Medal records per athlete per edition |
+| `data/hosts.csv` | Olympic edition metadata (city, dates, season) |
 
-#include "input.h"
+---
 
-int main() {
+## Shell Commands
 
-	/* simple data formats with validation examples */
-	int value = 0;
-	do {
-		printf("Integer Value? ");
-	} while(!readInteger(&value)); /* loops while invalid */
-		
-	printf("Integer Value = %d \n", value);
+| Command | Description |
+|---|---|
+| `help [command]` | List all commands, or show usage for a specific one |
+| `quit` | Exit the application |
+| `load_a` | Load athlete records from `athletes.csv` |
+| `load_m` | Load medal records from `medals.csv` |
+| `load_h` | Load host records from `hosts.csv` |
+| `clear` | Free all loaded data from memory |
+| `show_all` | Paginated listing of all athletes (sorted alphabetically) |
+| `show_participations <n>` | Athletes with at least `n` participations |
+| `show_first <YYYY>` | Athletes whose first participation was in the given year |
+| `show_host <City YYYY>` | Details for a given Olympic edition |
+| `discipline_statistics <City YYYY>` | Discipline breakdown for a given edition |
+| `athlete_info <athleteID>` | Full profile and medal history for an athlete |
+| `topn <season> <startYear> <endYear> <n>` | Top N countries by weighted medals in a period |
+| `medals_won <country> <year> <season>` | Medals won by a country from a given year onwards |
 
-	double value2 = 0;
-	do {
-		printf("Double Value? ");
-	} while(!readDouble(&value2)); /* loops while invalid */
-		
-	printf("Double Value = %lf \n", value2);
+### Example Session
 
-	/* Strings are consumed as-is */
-	char text[100];
-	printf("Text? ");
-	readString(text, 100);
-	printf("Text = %s \n", text);
+```
+bash@OlympicGM:~$ load_a
+75900 athlete records imported.
 
-	/* Example of the spliting function; use with CSV files later */
-	char line[100] = "Bruno Silva;bruno.silva@estsetubal.ips.pt;;2020/21";
+bash@OlympicGM:~$ load_m
+21697 medal records imported.
 
-	char** tokens = splitString(line, 4, ";");
-	for(int i=0; i<4; i++) {
-		printf("Token[%d] = %s \n", i, tokens[i]);
-	}
+bash@OlympicGM:~$ load_h
+53 host records imported.
 
-	free(tokens); 
+bash@OlympicGM:~$ show_host Sydney 2000
+Hosting city: Sydney
+Year: 2000
+Hosting country: Australia
+Duration of the event (days): 16
 
-	return 0;
-}
+bash@OlympicGM:~$ topn Summer 1990 2010 5
+Country                                  | Total medals | Average medals by edition | Average medals by game day
+------------------------------------------------------------------------------------------------------------------
+United States                            | 2847         | 12.45                     | 3.21
+...
+
+bash@OlympicGM:~$ quit
+Exiting OlympicGM... See you soon!
 ```
 
-and an example *user interaction* session:
+---
 
-```markdown
-Integer Value? 12d
-Integer Value? - 3
-Integer Value? -3
-Integer Value = -3 
-Double Value? 12.4.5
-Double Value? -3.14159
-Double Value = -3.141590 
-Text? This some text and a number 7 
-Text = This some text and a number 7 
-Token[0] = Bruno Silva 
-Token[1] = bruno.silva@estsetubal.ips.pt 
-Token[2] =  
-Token[3] = 2020/21
+## Project Structure
+
 ```
+c-olympic-games-manager/
+├── include/        # Header files (mirrors src/ structure)
+│   ├── adt/        # Abstract Data Type interfaces
+│   ├── core/       # App state, command dispatcher, business logic
+│   ├── domain/     # Domain model structs
+│   ├── io/         # Shell, input, CSV loading, listings
+│   └── utils/      # Date parsing, string utilities
+├── src/            # Implementations (mirrors include/)
+├── data/           # CSV datasets (not versioned)
+├── Makefile
+└── README.md
+```
+
+---
+
+## Documentation
+For detailed technical information about architecture, memory management, and design patterns, check the [Technical Manual](docs/Technical%20Manual.md).
+
+## Author
+
+**Filipe Paredes** — [filipeparedes3@gmail.com](mailto:filipeparedes3@gmail.com)
+
+Original university project by Filipe Paredes. List and Map ADT base implementations originally authored by Bruno Silva (brunomnsilva@gmail.com), refactored and extended by Filipe Paredes.

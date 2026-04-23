@@ -1,6 +1,44 @@
-default:
-	gcc -Wall -o prog main.c "./Input/input.c" "./ADTList/listArrayList.c" "./ADTList/listElem.c" "./ADTMap/mapSeparateChaining.c" "./ADTMap/mapElem.c" "./ADTSet/setLinkedList.c" "./ADTSet/setElem.c" "./Medal/medal.c" "./Host/host.c" "./Athlete/athlete.c" "./TopNStats/topnstats.c" "./DisciplineStats/disciplinestats.c" "./Date/date.c" "./StringWrap/stringWrap.c" "./Load/load.c" "./Logic/logic.c" "./Listings/listings.c"
-debug:
-	gcc -Wall -o prog -g main.c "./Input/input.c" "./ADTList/listArrayList.c" "./ADTList/listElem.c" "./ADTMap/mapSeparateChaining.c" "./ADTMap/mapElem.c" "./ADTSet/setLinkedList.c" "./ADTSet/setElem.c" "./Host/host.c" "./Athlete/athlete.c" "./Date/date.c" "./TopNStats/topnstats.c" "./DisciplineStats/disciplinestats.c" "./StringWrap/stringWrap.c" "./Load/load.c" "./Logic/logic.c" "./Listings/listings.c"
+# --- General configurations ---
+CC = gcc
+CFLAGS = -Wall -Wextra -Iinclude
+TARGET = prog
+
+# Directories
+SRC_DIR = src
+BUILD_DIR = build
+
+# --- Automatic file discovery ---
+# Find all .c files recursively
+SRCS = $(shell find $(SRC_DIR) -name "*.c")
+
+# Convert src/path/file.c to build/path/file.o
+OBJS = $(patsubst $(SRC_DIR)/%.c, $(BUILD_DIR)/%.o, $(SRCS))
+
+# --- Compilation rules ---
+
+all: $(TARGET)
+
+# Linking
+$(TARGET): $(OBJS)
+	$(CC) $(CFLAGS) -o $(TARGET) $(OBJS)
+
+# Pattern rule: compiles each .c into the build directory
+# The 'mkdir' ensures the subdirectories exist before compiling
+$(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
+	@mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+# --- Utility rules ---
+
+debug: CFLAGS += -g
+debug: clean all
+
+# Cleanup
 clean:
-	rm -f prog
+	rm -f $(TARGET)
+	rm -rf $(BUILD_DIR)
+
+.PHONY: all debug clean run
+
+run: all
+	./$(TARGET)
