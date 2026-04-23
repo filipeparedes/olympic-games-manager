@@ -9,7 +9,7 @@
  * 
  * @author Filipe Paredes (filipeparedes3@gmail.com)
  * 
- * @version 2.0.1
+ * @version 2.0.2
  * @date 2026-04-20
  * 
  * @copyright Copyright (c) 2026
@@ -88,7 +88,7 @@ int import_athletes(list_t *list, int *size){
         if(split_str[3] != NULL) strcpy(athlete.first_game, split_str[3]);
         if(split_str[4] != NULL) athlete.athlete_birth = atoi(split_str[4]);
 
-        list_add(list, count-1, athlete);
+        list_append(list, athlete);
         free(split_str);
     }
 

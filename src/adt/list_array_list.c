@@ -7,7 +7,7 @@
  * @author Bruno Silva (brunomnsilva@gmail.com) - Original Version
  * @author Filipe Paredes (filipeparedes3@gmail.com) - Refactor & Maintenance
  * 
- * @version 2.1.0
+ * @version 2.2.0
  * @date 2026-04-20
  * 
  * @bug No known bugs.
@@ -71,6 +71,16 @@ int list_destroy(list_t **list) {
 	*list = NULL;
 
 	return LIST_OK;
+}
+
+int list_append(list_t *list, list_elem_t elem) {
+    if (list == NULL) return LIST_NULL;
+    if (!ensure_capacity(list)) return LIST_NO_MEMORY;
+
+    list->elements[list->size] = elem;
+    list->size++;
+
+    return LIST_OK;
 }
 
 int list_add(list_t *list, int rank, list_elem_t elem) {

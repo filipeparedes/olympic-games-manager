@@ -7,7 +7,7 @@
  * @author Bruno Silva (brunomnsilva@gmail.com) - Original Version
  * @author Filipe Paredes (filipeparedes3@gmail.com) - Refactor & Maintenance
  * 
- * @version 2.1.0
+ * @version 2.2.0
  * @date 2026-04-20
  * 
  * @bug No known bugs.
@@ -45,6 +45,16 @@ list_t *list_create();
  * @return LIST_NULL if '*ptList' is NULL 
  */
 int list_destroy(list_t **list);
+
+/**
+ * @brief Add an element to the end of a list.
+ * 
+ * @param list [in] pointer to the list
+ * @param elem [in] element to add
+ * @return LIST_NO_MEMORY if unsufficient memory for allocation, or
+ * @return LIST_NULL if 'list' is NULL 
+ */
+int list_append(list_t *list, list_elem_t elem);
 
 /**
  * @brief Add an element to a list.
