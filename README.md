@@ -1,8 +1,8 @@
-# 🏅 OlympicGM — Olympic Games Manager
+# Olympic Games Manager
 
 A command-line shell application written in **C** for managing and querying Olympic Games data. Load datasets of athletes, medals, and host editions, then query them through an interactive shell interface.
 
-> Originally developed as a university project. Later refactored from scratch for code quality, modularity, and scalability.
+> Originally developed as a university project for the *Algorithms and Abstract Data Types* course at [Instituto Politécnico de Setúbal](https://ips.pt/), later refactored from scratch for code quality, modularity, and scalability.
 
 ---
 
