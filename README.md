@@ -131,6 +131,6 @@ For detailed technical information about architecture, memory management, and de
 
 ## Author
 
-**Filipe Paredes** — [filipeparedes3@gmail.com](mailto:filipeparedes3@gmail.com)
+**Filipe Paredes** — [filipeparedes.dev](https://filipeparedes.dev) · [filipeparedes3@gmail.com](mailto:filipeparedes3@gmail.com)
 
 Original university project by Filipe Paredes. List and Map ADT base implementations originally authored by Bruno Silva (brunomnsilva@gmail.com), refactored and extended by Filipe Paredes.
